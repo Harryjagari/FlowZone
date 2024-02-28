@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FlowZone.Views.GetStarted"
+             Title="GetStarted"
+             NavigationPage.HasNavigationBar="False">
+             
+    
+    <ContentPage.Content>
+        <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Padding="20" Spacing="10">
+            
+            <!--Image-->
+            <Image Source="logo.png" Aspect="AspectFill" HeightRequest="130" WidthRequest="130" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
+
+            <!-- Image -->
+            <Image Source="resource.png" Aspect="AspectFit" HeightRequest="200" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
+
+            <!-- Slogan -->
+            <Label Text="FlowZone" FontSize="20" HorizontalOptions="Center"/>
+
+            <!-- Description -->
+            <Label Text="Unleash Your Productivity Potential !" FontSize="16" HorizontalOptions="CenterAndExpand"/>
+
+            <!-- Skip Button -->
+            <Button Text="Skip" Clicked="OnSkipClicked" HorizontalOptions="CenterAndExpand" VerticalOptions="End" Margin="0,120,0,50" HeightRequest="50" WidthRequest="100"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
+
+
+
+
+
+

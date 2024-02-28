@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowZone", "FlowZone\FlowZone.csproj", "{72715229-9EC3-4A27-8BFF-BED4B0FB1163}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{72715229-9EC3-4A27-8BFF-BED4B0FB1163}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72715229-9EC3-4A27-8BFF-BED4B0FB1163}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72715229-9EC3-4A27-8BFF-BED4B0FB1163}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{72715229-9EC3-4A27-8BFF-BED4B0FB1163}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72715229-9EC3-4A27-8BFF-BED4B0FB1163}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72715229-9EC3-4A27-8BFF-BED4B0FB1163}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {06C60F11-B9E2-4B93-80E6-C2BE913725E5}
+	EndGlobalSection
+EndGlobal

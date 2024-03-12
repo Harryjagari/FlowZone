@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlowZone.shared", "FlowZone
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowZone.web", "FlowZone.web\FlowZone.web.csproj", "{B079AA0C-F30B-4287-A4D7-56452EC2C9AD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowZoneApi", "FlowZoneApi\FlowZoneApi.csproj", "{BDB89176-B7CB-48EE-988D-70F20C276180}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{B079AA0C-F30B-4287-A4D7-56452EC2C9AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B079AA0C-F30B-4287-A4D7-56452EC2C9AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B079AA0C-F30B-4287-A4D7-56452EC2C9AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDB89176-B7CB-48EE-988D-70F20C276180}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDB89176-B7CB-48EE-988D-70F20C276180}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDB89176-B7CB-48EE-988D-70F20C276180}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDB89176-B7CB-48EE-988D-70F20C276180}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

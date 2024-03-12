@@ -82,8 +82,8 @@ namespace FlowZone
             static void SetHttpClient(HttpClient httpClient)
 			{
 				var baseUrl = DeviceInfo.Platform == DevicePlatform.Android
-						? "https://10.0.2.2:7061"
-						: "https://localhost:7061";
+						? "https://10.0.2.2:7026"
+						: "https://localhost:7026";
 				httpClient.BaseAddress = new Uri(baseUrl);
 			}
 		}

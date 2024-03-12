@@ -1,12 +1,108 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              x:Class="FlowZone.Views.ToDo"
-             Title="ToDo">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="ToDo"
+             NavigationPage.HasNavigationBar="True"
+             NavigationPage.HasBackButton="True">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="20"
+                             VerticalOptions="StartAndExpand">
+            <StackLayout BackgroundColor="Blue"  Padding="15" >
+                <Frame BackgroundColor="White" CornerRadius="5" Padding="5" Margin="0,15">
+                    <Entry Placeholder="Enter task title"
+                           FontSize="16"
+                           BackgroundColor="Transparent"
+                           HorizontalOptions="Fill" />
+                </Frame>
+
+
+                <Frame BackgroundColor="White" CornerRadius="5" Padding="5" Margin="0,15">
+                    <Entry Placeholder="Enter task notes"
+                            FontSize="16"
+                            BackgroundColor="Transparent"
+                            HeightRequest="50"
+                            HorizontalOptions="Fill"/>
+
+                </Frame>
+            </StackLayout>
+
+            <Label Text="Checklist"
+                   FontSize="18"
+                   FontAttributes="Bold" />
+
+            <StackLayout Spacing="5"
+                         BackgroundColor="White"
+                         Padding="5">
+                <Entry Placeholder="New checklist entry"
+                       FontSize="14" />
+
+                <Image Source="check.png"
+                       HeightRequest="20"
+                       WidthRequest="20"
+                       VerticalOptions="Center" />
+            </StackLayout>
+
+            <Label Text="Difficulty"
+                   FontSize="18"
+                   FontAttributes="Bold" />
+
+            <Picker Title="Select difficulty"
+                    FontSize="16"
+                    BackgroundColor="White">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Trivial</x:String>
+                        <x:String>Easy</x:String>
+                        <x:String>Medium</x:String>
+                        <x:String>Hard</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+
+            <Label Text="Scheduling"
+                   FontSize="18"
+                   FontAttributes="Bold" />
+
+            <DatePicker Date="{x:Static sys:DateTime.Now}" 
+                        FontSize="16"
+                        BackgroundColor="White"
+                        HorizontalOptions="Fill" />
+
+            <Label Text="Due Date"
+                   FontSize="16"
+                   FontAttributes="Bold" />
+
+            <TimePicker Time="{x:Static sys:TimeSpan.Zero}"
+                    FontSize="16"
+                    BackgroundColor="White"
+                    HorizontalOptions="Fill" />
+
+            <Label Text="Reminders"
+                   FontSize="18"
+                   FontAttributes="Bold" />
+
+            <StackLayout Spacing="5"
+                         BackgroundColor="White"
+                         Padding="5">
+                <Switch IsToggled="True"/>
+
+                <Label Text="Allow Habitica notifications in the Settings app to receive reminders"
+                       FontSize="14"
+                       HorizontalOptions="Start" />
+            </StackLayout>
+
+            <Button Text="CREATE"
+                    FontSize="18"
+                    FontAttributes="Bold"
+                    BackgroundColor="Blue"
+                    TextColor="White"
+                    HorizontalOptions="Fill"
+                    CornerRadius="10" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
 </ContentPage>

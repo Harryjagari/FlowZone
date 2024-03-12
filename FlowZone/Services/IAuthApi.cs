@@ -10,10 +10,10 @@ namespace FlowZone.Services
 {
 	public interface IAuthApi
 	{
-		[Post("/api/signup")]
+		[Post("/api/Register")]
 		Task<ResultWithDataDto<AuthResponseDto>> SignupAsync(SignupRequestDto dto);
 
-		[Post("/api/signin")]
+		[Post("/api/Login")]
 		Task<ResultWithDataDto<AuthResponseDto>> SigninAsync(SigninRequestDto dto);
 	}
 }

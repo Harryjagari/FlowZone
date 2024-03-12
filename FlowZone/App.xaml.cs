@@ -1,19 +1,16 @@
-﻿using FlowZone.Views;
+﻿using FlowZone.Services;
+using FlowZone.Views;
 namespace FlowZone
 {
 	public partial class App : Application
 	{
-		public App()
+		public App(AuthService authService)
 		{
 			InitializeComponent();
 
-			MainPage = new AppShell();
-		}
+			authService.Initialize();
 
-		protected override void OnStart()
-		{
-			// Navigate to the GetStartedPage instead of MainPage
-			MainPage = new NavigationPage(new GetStarted());
+			MainPage = new AppShell(authService);
 		}
 	}
 }

@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:FlowZone.ViewModels"
              x:Class="FlowZone.Views.Login"
-             Title="Login">
+             Title="Login"
+             x:DataType="vm:AuthViewModel"
+             Shell.FlyoutBehavior="Disabled">
     <ContentPage.Content>
         <StackLayout VerticalOptions="CenterAndExpand" Padding="20">
             <Label Text="Login" FontSize="24" HorizontalOptions="Center" Margin="0,0,0,20"/>
-            <Entry Placeholder="Username" x:Name="UsernameEntry" Margin="0,0,0,10"/>
-            <Entry Placeholder="Password" IsPassword="True" x:Name="PasswordEntry" Margin="0,0,0,10"/>
-            <Button Text="Login" Clicked="OnLoginButtonClicked" HorizontalOptions="FillAndExpand"/>
+            <Entry Placeholder="Username" Text="{Binding Email}" Margin="0,0,0,10"/>
+            <Entry Placeholder="Password" IsPassword="True" Text="{Binding Password}" Margin="0,0,0,10"/>
+            <Button Text="Login" IsEnabled="{Binding CanSignin}" Command="{Binding SigninCommand}" HorizontalOptions="FillAndExpand"/>
             <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
                 <Label Text="Don't have an account? " />
                 <Label Text="Sign up" TextColor="Blue" Margin="0,0,5,0" FontAttributes="Bold">
@@ -22,7 +25,11 @@
                     <TapGestureRecognizer Tapped="OnForgotPasswordTapped" />
                 </Label.GestureRecognizers>
             </Label>
-
+            <ActivityIndicator HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           Color="DarkBlue"
+                           IsRunning="{Binding IsBusy}">
+            </ActivityIndicator>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

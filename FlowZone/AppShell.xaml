@@ -1,34 +1,243 @@
-<!-- AppShell.xaml -->
+<?xml version="1.0" encoding="UTF-8" ?>
 <Shell
     x:Class="FlowZone.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:FlowZone"
-    xmlns:views="clr-namespace:FlowZone.Views"
-    Shell.FlyoutBehavior="Flyout">
+    xmlns:pages="clr-namespace:FlowZone.Views"
+    Shell.FlyoutBehavior="Flyout"
+    Title="FlowZone">
 
-    <ShellContent
-        Title="Login"
-        ContentTemplate="{DataTemplate views:Login}"
-        Route="Login"
-        FlyoutItemIsVisible="False"
-        Shell.FlyoutBehavior="Disabled"/>
+    <!--<ShellContent
+        Title="Home"
+        ContentTemplate="{DataTemplate local:MainPage}"
+        Route="MainPage" />-->
 
-    <FlyoutItem Title="MainPage" FlyoutDisplayOptions="AsMultipleItems" Route="MainPage">
-        <ShellContent Title="Home" ContentTemplate="{DataTemplate views:MainPage}" Route="MainPage"/>
-        <ShellContent Title="About" ContentTemplate="{DataTemplate views:GetStarted}" Route="GetStarted"/>
-        <ShellContent Title="Contact" ContentTemplate="{DataTemplate views:Login}" Route="Login"/>
-    </FlyoutItem>
+    <ShellContent ContentTemplate="{DataTemplate pages:GetStarted}"
+                  Shell.FlyoutBehavior="Disabled"
+                  Shell.FlyoutItemIsVisible="False"
+                  Route="GetStarted"/>
 
-    <!-- Add other FlyoutItems and ShellContents as needed -->
+    <TabBar FlyoutDisplayOptions="AsMultipleItems">
+        <ShellContent
+            Title="Home"
+            ContentTemplate="{DataTemplate pages:Home}"
+            Icon="Home"
+            Route="Home" 
+            Shell.FlyoutBehavior="Flyout"/>
+        <ShellContent
+            Title="Tasks"
+            ContentTemplate="{DataTemplate pages:ToDo}"
+            Icon="Home"
+            Route="ToDo" />
+        <ShellContent
+            Title="Pomodoro"
+            ContentTemplate="{DataTemplate pages:Pomodoro}"
+            Icon="Home"
+            Route="Pomodoro" />
+        <ShellContent
+            Title="Profile"
+            ContentTemplate="{DataTemplate pages:Profile}"
+            Icon="Home"
+            Route="Profile" />
+
+    </TabBar>
+
+    <MenuItem Text="Signout"
+              IconImageSource="Home"
+              Clicked="OnSignOutTapped"/>
+
+    <Shell.ItemTemplate>
+        <DataTemplate>
+            <Grid ColumnDefinitions="Auto,*" 
+                  Padding="10"
+                  ColumnSpacing="15">
+                <Image
+                    Grid.Column="0"
+                    HeightRequest="24"
+                    Source="{Binding FlyoutIcon}"
+                    WidthRequest="24"/>
+                <Label
+                    Grid.Column="1"
+                    FontSize="16"
+                    Text="{Binding Title}"
+                    TextColor="SkyBlue"/>
+            </Grid>
+        </DataTemplate>
+    </Shell.ItemTemplate>
+
+    <Shell.MenuItemTemplate>
+        <DataTemplate>
+            <Grid ColumnDefinitions="Auto,*" 
+                  Padding="10"
+                  ColumnSpacing="15">
+                <Image
+                     Grid.Column="0"
+                     HeightRequest="24"
+                     Source="{Binding FlyoutIcon}"
+                     WidthRequest="24"/>
+                <Label
+                     Grid.Column="1"
+                     FontSize="16"
+                     Text="{Binding Title}"
+                     TextColor="SkyBlue"/>
+            </Grid>
+        </DataTemplate>
+    </Shell.MenuItemTemplate>
+    
+    <!--<Shell.FlyoutHeader>
+        --><!--<Border BackgroundColor="DarkBlue"
+                Padding="10"
+                StrokeThickness="0">
+            <VerticalStackLayout HorizontalOptions="Center"
+                                 Spacing="10">
+            <Label Text=" Harendra Jagari"
+                   HorizontalOptions="StartAndExpand"
+                   FontAttributes="Bold"
+                   FontSize="14"
+                   TextColor="White"
+                   TextTransform="Uppercase"/>
+            </VerticalStackLayout>
+        </Border>--><!--
+
+
+        <Grid
+    x:Name="flyout"
+    HorizontalOptions="Start" VerticalOptions="Fill"
+    Background="{AppThemeBinding Light=White, Dark=Black}"
+    WidthRequest="280"
+    Shadow="{OnPlatform Default={x:Null}, iOS={Shadow Brush=Black, Opacity=0.3}}">
+            --><!-- TODO: On Android, TranslationX does not work when Shadow is set --><!--
+
+            <Path
+        Fill="Transparent"
+        Stroke="LightGray"
+        StrokeThickness="10"
+        Opacity="0.3">
+                <Path.Data>
+                    <GeometryGroup>
+                        <EllipseGeometry
+                    RadiusX="75"
+                    RadiusY="75"
+                    Center="30,25" />
+                        <EllipseGeometry
+                    RadiusX="55"
+                    RadiusY="55"
+                    Center="20,120" />
+                    </GeometryGroup>
+                </Path.Data>
+            </Path>
+
+            <Grid
+        x:Name="flyoutContent"
+        RowDefinitions="120, *, auto">
+                <Grid
+            ColumnDefinitions="auto, *"
+            ColumnSpacing="15"
+            Padding="20, 0">
+                    <Border
+                HorizontalOptions="Start" VerticalOptions="Center"
+                WidthRequest="65" HeightRequest="65"
+                StrokeShape="{Ellipse}"
+                StrokeThickness="0">
+                        <Image
+                    Source="avatar.jpg"
+                    Aspect="AspectFill"
+                    Background="Black"/>
+                    </Border>
+
+                    <VerticalStackLayout
+                Grid.Column="1"
+                VerticalOptions="Center">
+                        <Label
+                    Text="Angel Fernandus"
+                    FontSize="19"
+                    FontFamily="NunitoSemiBold"
+                    TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                        <Label
+                    Text="angel_fernandus"
+                    FontSize="13"
+                    TextColor="Gray"/>
+                    </VerticalStackLayout>
+                </Grid>
+    </Shell.FlyoutHeader>-->
+
+    <Shell.FlyoutHeader>
+        <Grid
+        x:Name="flyout"
+        HorizontalOptions="Start" VerticalOptions="Fill"
+        Background="{AppThemeBinding Light=White, Dark=Black}"
+        WidthRequest="280"
+        Shadow="{OnPlatform Default={x:Null}, iOS={Shadow Brush=Black, Opacity=0.3}}">
+            <!-- TODO: On Android, TranslationX does not work when Shadow is set -->
+
+            <Path
+            Fill="Transparent"
+            Stroke="LightGray"
+            StrokeThickness="10"
+            Opacity="0.3">
+                <Path.Data>
+                    <GeometryGroup>
+                        <EllipseGeometry
+                        RadiusX="75"
+                        RadiusY="75"
+                        Center="30,25" />
+                        <EllipseGeometry
+                        RadiusX="55"
+                        RadiusY="55"
+                        Center="20,120" />
+                    </GeometryGroup>
+                </Path.Data>
+            </Path>
+
+            <Grid
+            x:Name="flyoutContent"
+            RowDefinitions="120, *, auto">
+                <Grid
+                ColumnDefinitions="auto, *"
+                ColumnSpacing="15"
+                Padding="20, 0">
+                    <Border
+                    HorizontalOptions="Start" VerticalOptions="Center"
+                    WidthRequest="65" HeightRequest="65"
+                    StrokeShape="{Ellipse}"
+                    StrokeThickness="0">
+                        <Image
+                        Source="avatar.jpg"
+                        Aspect="AspectFill"
+                        Background="Black"/>
+                    </Border>
+
+                    <VerticalStackLayout
+                    Grid.Column="1"
+                    VerticalOptions="Center">
+                        <Label
+                        Text="Angel Fernandus"
+                        FontSize="19"
+                        FontFamily="NunitoSemiBold"
+                        TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                        <Label
+                        Text="angel_fernandus"
+                        FontSize="13"
+                        TextColor="Gray"/>
+                    </VerticalStackLayout>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Shell.FlyoutHeader>
+
 
     <Shell.FlyoutFooter>
-        <StackLayout Padding="20">
-            <Label Text="Sign Out" TextColor="Blue" Margin="0,0,5,0" FontAttributes="Bold">
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="OnSignOutTapped" />
-                </Label.GestureRecognizers>
-            </Label>
-        </StackLayout>
+        <Border BackgroundColor="DarkBlue"
+                StrokeThickness="0"
+                Padding="10">
+            <Label
+                Text="Copyright @ Harendra Jagari"
+                FontAttributes="Bold"
+                FontSize="14"
+                HorizontalOptions="Center"
+                TextColor="White"/>
+
+        </Border>
     </Shell.FlyoutFooter>
 </Shell>

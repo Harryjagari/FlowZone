@@ -55,7 +55,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Views\ConfigurationPage.xaml.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <MauiImage Remove="Resources\Images\get_started.svg" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Remove="Views\ConfigurationPage.xaml" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -76,11 +84,17 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+		<PackageReference Include="Refit.HttpClientFactory" Version="7.0.0" />
 		<PackageReference Include="SimpleToolkit.Core" Version="4.0.0" />
 		<PackageReference Include="SimpleToolkit.SimpleShell" Version="4.1.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\FlowZone.shared\FlowZone.shared.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -96,7 +110,13 @@
 	  <MauiXaml Update="Views\GetStarted.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\Home.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\Login.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Notification.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Pomodoro.xaml">
@@ -114,6 +134,11 @@
 	  <MauiXaml Update="Views\ToDo.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Models\" />
+	  <Folder Include="Data\" />
 	</ItemGroup>
 
 </Project>

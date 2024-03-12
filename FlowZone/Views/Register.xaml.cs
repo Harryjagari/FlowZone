@@ -1,16 +1,16 @@
+using FlowZone.ViewModels;
+
 namespace FlowZone.Views;
 
 public partial class Register : ContentPage
 {
-	public Register()
+	public Register(AuthViewModel authViewModel)
 	{
 		InitializeComponent();
+		BindingContext = authViewModel;
 	}
-
-	private async void OnRegisterButtonClicked(object sender, EventArgs e)
+	private async void OnSignInTapped(object sender, EventArgs e)
 	{
-		// Add your logic here for handling the skip button click event
-		await DisplayAlert("Register", "Register button clicked!", "OK");
-		//await Navigation.PushAsync(new GetStarted());
+		await Shell.Current.GoToAsync(nameof(Login));
 	}
 }

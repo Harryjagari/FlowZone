@@ -2,15 +2,59 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FlowZone.Views.Register"
-             Title="Register">
-    <ContentPage.Content>
-        <StackLayout VerticalOptions="CenterAndExpand" Padding="20">
-            <Label Text="Register" FontSize="24" HorizontalOptions="Center" Margin="0,0,0,20"/>
-            <Entry Placeholder="Username" x:Name="UsernameEntry" Margin="0,0,0,10"/>
-            <Entry Placeholder="Email" Keyboard="Email" x:Name="EmailEntry" Margin="0,0,0,10"/>
-            <Entry Placeholder="Password" IsPassword="True" x:Name="PasswordEntry" Margin="0,0,0,10"/>
-            <Entry Placeholder="Confirm Password" IsPassword="True" x:Name="ConfirmPasswordEntry" Margin="0,0,0,10"/>
-            <Button Text="Register" Clicked="OnRegisterButtonClicked" HorizontalOptions="FillAndExpand"/>
-        </StackLayout>
-    </ContentPage.Content>
+             xmlns:vm="clr-namespace:FlowZone.ViewModels"
+             Title="Register"
+             Shell.FlyoutBehavior="Disabled"
+             x:DataType="vm:AuthViewModel">
+    <Grid>
+        <VerticalStackLayout VerticalOptions="Center">
+            <!-- Image -->
+            <Image Source="resource.png" 
+                   Aspect="AspectFit" 
+                   HeightRequest="200" 
+                   HorizontalOptions="CenterAndExpand" 
+                   VerticalOptions="CenterAndExpand" />
+            <Entry Text="{Binding Name}"
+                   FontSize="18"
+                   TextColor="DarkBlue"
+                   Placeholder="Username"
+                   PlaceholderColor="DarkBlue"/>
+            <Entry Text="{Binding Email}"
+                   FontSize="18"
+                   TextColor="DarkBlue"
+                   Placeholder="Email"
+                   PlaceholderColor="DarkBlue"
+                   Keyboard="Email"/>
+            <Entry Text="{Binding Password}"
+                   FontSize="18"
+                   TextColor="DarkBlue"
+                   Placeholder="Password"
+                   PlaceholderColor="DarkBlue"
+                   IsPassword="True"/>
+            <Entry Text="{Binding Address}"
+                   FontSize="18"
+                   TextColor="DarkBlue"
+                   Placeholder="Address"
+                   PlaceholderColor="DarkBlue"/>
+            <Label Text="Existing user? Signin"
+                   FontSize="15"
+                   FontAttributes="Bold"
+                   TextColor="DarkBlue">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnSignInTapped"/>
+                </Label.GestureRecognizers>
+            </Label>
+            <Button Text="Register"
+                    IsEnabled="{Binding CanSignup}"
+                    Command="{Binding SignupCommand}"/>
+        
+
+        </VerticalStackLayout>
+        <ActivityIndicator HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           Color="DarkBlue"
+                           IsRunning="{Binding IsBusy}"/>
+    </Grid>
+            
+
 </ContentPage>

@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace FlowZone.shared.Dtos
 {
-	public record SignupRequestDto(string Name,string Email,string Password,string Address);
+    public record SignupRequestDto(string Name, string Email, string Password, string Address);
 }

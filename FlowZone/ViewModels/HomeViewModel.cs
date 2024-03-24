@@ -31,8 +31,7 @@ namespace FlowZone.ViewModels
             try
             {
                 _isInitialized = true;
-               ToDos = await _toDosApi.GetToDosAsync();
-				
+
 
 			}
             catch (Exception ex) 

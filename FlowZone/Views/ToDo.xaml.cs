@@ -1,9 +1,13 @@
+using FlowZone.ViewModels;
+
 namespace FlowZone.Views;
 
 public partial class ToDo : ContentPage
 {
-	public ToDo()
+	public ToDo(ToDoViewModel toDoViewModel)
 	{
 		InitializeComponent();
-	}
+        BindingContext = toDoViewModel;
+
+    }
 }

@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace FlowZone.shared.Dtos
 {
-    public record AvatarDto
+    public class AvatarDto
     {
-        public byte[] ImageData { get; set; }
-        public string FilePath { get; set; }
-        public string Name { get; set; }
-        public double Price { get; set; }
+        public Guid AvatarId { get; set; }
+        public string avatarName { get; set; } // Adjusted property name to match form input name
+        public double avatarPrice { get; set; } // Adjusted property name to match form input name
+        public IFormFile avatarImage { get; set; }
+        public string? ImagePath { get; set; }
     }
-
 }

@@ -28,7 +28,8 @@ builder.Services.AddAuthorization();
 builder.Services.AddTransient<TokenService>()
     .AddTransient<PasswordService>()
     .AddTransient<LoginController>()
-    .AddTransient<RegisterController>();
+    .AddTransient<RegisterController>()
+    .AddTransient<AvatarController>();
 
 var app = builder.Build();
 

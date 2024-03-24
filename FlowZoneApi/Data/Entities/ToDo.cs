@@ -23,7 +23,7 @@ namespace FlowZoneApi.Data.Entities
 		public string Priority { get; set; }
 
         // Foreign key
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
         // Navigation property
         public User User { get; set; }
 

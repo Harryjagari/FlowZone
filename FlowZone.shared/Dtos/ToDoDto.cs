@@ -7,5 +7,5 @@ using System.Threading.Tasks;
 
 namespace FlowZone.shared.Dtos
 {
-	public record ToDoDto(Guid ToDoId, String Title, string Description, DateTime Created, DateTime LastUpdated, DateTime DueDate, string Priority);
+    public record ToDoDto(Guid ToDoId, string Title, string Description, DateTime Created, DateTime DueDate, string Priority);
 }

@@ -1,10 +1,12 @@
-﻿namespace FlowZone.shared.Dtos;
-
-public record ResultDto(bool IsSuccess, string? ErrorMessage)
+﻿namespace FlowZone.shared.Dtos
 {
-	public static ResultDto Success() => new(true, null);
+    public record ResultDto(bool IsSuccess, string? ErrorMessage)
+    {
+        public static ResultDto Success() => new(true, null);
 
-	public static ResultDto Failure(string? errorMessage) => new(false, errorMessage);
-		
+        public static ResultDto Failure(string? errorMessage) => new(false, errorMessage);
+
+    }
 }
+
 

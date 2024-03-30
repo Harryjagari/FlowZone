@@ -38,6 +38,21 @@ namespace FlowZoneApi.Controllers
             return Ok(avatars);
         }
 
+
+        [HttpGet("ById/{id}")]
+        public async Task<IActionResult> GetAvatarById(Guid id)
+        {
+            var avatar = await _context.Avatars.FindAsync(id);
+
+            if (avatar == null)
+            {
+                return NotFound(); 
+            }
+
+            return Ok(avatar);
+        }
+
+
         // Helper method to get full image path
         private static string GetImagePath(string imageName)
         {
@@ -50,51 +65,38 @@ namespace FlowZoneApi.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<Avatar>> PostAvatar(AvatarDto avatarDto)
+        public async Task<IActionResult> Create([FromForm]AvatarRequestDto model)
         {
-            string FileName = UploadFile(avatarDto);
+            if (model == null || model.avatarImage == null)
+                return BadRequest("Invalid form data");
+
+            // Save the file to a root folder
+            string uploadDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images");
+            Directory.CreateDirectory(uploadDir); // Create directory if it doesn't exist
+            string uniqueFileName = Guid.NewGuid().ToString() + "_" + model.avatarImage.FileName;
+            string filePath = Path.Combine(uploadDir, uniqueFileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await model.avatarImage.CopyToAsync(stream);
+            }
+
+            // Store the file path in the database
             var Avatar = new Avatar
             {
-                Name = avatarDto.avatarName,
-                Price = avatarDto.avatarPrice,
-                ImagePath = FileName
+                Name = model.avatarName,
+                Price = model.avatarPrice,
+                ImagePath = filePath
             };
+
             _context.Avatars.Add(Avatar);
             await _context.SaveChangesAsync();
 
-            var savedAvatarDto = new Avatar
-            {
-                AvatarId = Avatar.AvatarId,
-                Name = Avatar.Name,
-                Price = Avatar.Price,
-                
-            };
-
-            // Return the saved AvatarDto along with a 201 Created status
-            return CreatedAtAction(nameof(GetAvatars), new { id = savedAvatarDto.AvatarId }, savedAvatarDto);
+            return Ok("Avatar created successfully");
         }
-
-
-        private string UploadFile(AvatarDto avatarDto)
-        {
-            string fileName = null;
-            if (avatarDto.avatarImage != null)
-            {
-                string uploadDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images");
-                Directory.CreateDirectory(uploadDir); // Create directory if it doesn't exist
-                fileName = Guid.NewGuid().ToString() + "-" + avatarDto.avatarImage.FileName;
-                string filePath = Path.Combine(uploadDir, fileName);
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    avatarDto.avatarImage.CopyTo(fileStream);
-                }
-            }
-            return fileName;
-        }
-
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAvatar(Guid id, AvatarDto avatarDto)
+        public async Task<IActionResult> UpdateAvatar(Guid id, [FromBody] AvatarUpdateRequestDto avatarUpdateRequestDto)
         {
             var avatar = await _context.Avatars.FindAsync(id);
 
@@ -104,16 +106,8 @@ namespace FlowZoneApi.Controllers
             }
 
             // Update other properties
-            avatar.Name = avatarDto.avatarName;
-            avatar.Price = avatarDto.avatarPrice;
-
-            if (avatarDto.avatarImage != null)
-            {
-                // If a new image is provided, update the image
-                string newFileName = UploadFile(avatarDto);
-                DeleteFile(avatar.ImagePath); // Delete the old image
-                avatar.ImagePath = newFileName;
-            }
+            avatar.Name = avatarUpdateRequestDto.avatarName;
+            avatar.Price = avatarUpdateRequestDto.avatarPrice;
 
             _context.Entry(avatar).State = EntityState.Modified;
 

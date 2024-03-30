@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FlowZone.Views.ToDoView"
+             xmlns:vm="clr-namespace:FlowZone.ViewModels"
+             Title="ToDoView"
+             x:DataType="vm:ToDoViewModel">
+    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Create" Command="{Binding AddToDoItemCommand}" />
+    </ContentPage.ToolbarItems>
+    <ScrollView>
+        <StackLayout Margin="10">
+            <Label Text="ToDos" FontSize="20" FontAttributes="Bold" Margin="0,10,0,5" />
+            <CollectionView ItemsSource="{Binding ToDoItems}"
+                            SelectionMode="None"
+                            VerticalOptions="FillAndExpand"
+                            Margin="0,0,0,10">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="10"
+                              BackgroundColor="#e0e0e0"
+                              Margin="0,0,0,10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Row="0" Text="{Binding Title}" FontAttributes="Bold" />
+                            <Label Grid.Row="1" Text="{Binding Description}" />
+                            <Label Grid.Row="2" Text="{Binding DueDate}" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

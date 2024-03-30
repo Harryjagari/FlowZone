@@ -1,0 +1,117 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Avatars";
+}
+<main aria-labelledby="title" class="container">
+    <div class="row">
+        <div class="col-6">
+            <h1 style="color: blue;">Avatars</h1>
+        </div>
+        <div class="col-6 text-end">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#avatarModal">
+                Add
+            </button>
+        </div>
+    </div>
+
+    @foreach (var avatar in Model)
+    {
+        <div class="col-4">
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="@avatar.ImagePath" alt="Avatar Image">
+                <div class="card-body">
+                    <h5 class="card-title">@avatar.avatarName</h5>
+                    <p class="card-text">Price: @avatar.avatarPrice</p>
+                    <button type="button" class="btn btn-primary update-avatar" data-toggle="modal" data-target="#avatarUpdateModal-@avatar.AvatarId">
+                        Update
+                    </button>
+                    <form action="@Url.Action("Delete", "Avatar", new { id = avatar.AvatarId })" method="post" onsubmit="return confirm('Are you sure you want to delete this avatar?');">
+                        <input type="hidden" name="_method" value="DELETE" />
+                        <button type="submit" class="btn btn-primary">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Update modal for this avatar -->
+        <div class="modal fade" id="avatarUpdateModal-@avatar.AvatarId" tabindex="-1" role="dialog" aria-labelledby="avatarUpdateModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="avatarUpdateModalLabel">Update Avatar</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Update form -->
+                        <form id="avatarUpdateForm-@avatar.AvatarId" action="@Url.Action("Update", "Avatar", new { id = avatar.AvatarId })" method="post" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="avatarName">Name</label>
+                                <input type="text" class="form-control input-width" id="avatarName-@avatar.AvatarId" name="avatarName" placeholder="Avatar Name" value="@avatar.avatarName">
+                            </div>
+                            <div class="form-group">
+                                <label for="avatarPrice">Price</label>
+                                <input type="number" class="form-control input-width" id="avatarPrice-@avatar.AvatarId" name="avatarPrice" placeholder="Avatar Price" value="@avatar.avatarPrice">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="avatarModal" tabindex="-1" role="dialog" aria-labelledby="avatarModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="avatarModalLabel">Add Avatars</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="avatarForm" action="@Url.Action("Create", "Avatar")" method="post" enctype="multipart/form-data">
+
+                        <!-- Form inputs -->
+                        <div class="form-group">
+                            <label for="avatarName">Name</label>
+                            <input type="text" class="form-control input-width" id="avatarName" name="avatarName" placeholder="Avatar Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="avatarPrice">Price</label>
+                            <input type="number" class="form-control input-width" id="avatarPrice" name="avatarPrice" placeholder="Avatar Price">
+                        </div>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="avatarImage" name="avatarImage">
+                            <label class="custom-file-label" for="avatarImage" id="avatarImageLabel">Choose file</label>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="saveAvatarButton">Save</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<script>
+    $(document).ready(function () {
+        $('#avatarImage').change(function () {
+            var fileName = $(this).val().split('\\').pop(); // Extract filename
+            $('#avatarImageLabel').text(fileName); // Set the label text to the filename
+        });
+    });
+</script>
+

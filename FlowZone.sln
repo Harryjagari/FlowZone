@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlowZone.shared", "FlowZone
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlowZoneApi", "FlowZoneApi\FlowZoneApi.csproj", "{BDB89176-B7CB-48EE-988D-70F20C276180}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{E8A4C71B-61ED-408F-BA46-E4FE1B396ADD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{E8A4C71B-61ED-408F-BA46-E4FE1B396ADD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowZone.Android", "FlowZone.Android\FlowZone.Android.csproj", "{5617147E-0FAD-4281-A915-9870E951A1DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +37,12 @@ Global
 		{E8A4C71B-61ED-408F-BA46-E4FE1B396ADD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E8A4C71B-61ED-408F-BA46-E4FE1B396ADD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E8A4C71B-61ED-408F-BA46-E4FE1B396ADD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5617147E-0FAD-4281-A915-9870E951A1DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5617147E-0FAD-4281-A915-9870E951A1DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5617147E-0FAD-4281-A915-9870E951A1DF}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{5617147E-0FAD-4281-A915-9870E951A1DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5617147E-0FAD-4281-A915-9870E951A1DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5617147E-0FAD-4281-A915-9870E951A1DF}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

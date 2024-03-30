@@ -1,0 +1,156 @@
+﻿@using static WebApplication1.Controllers.ChallengeController;
+@using FlowZone.shared.Dtos
+
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Challenges";
+}
+<main aria-labelledby="title" class="container">
+    <div class="row">
+        <div class="col-6">
+            <h1 style="color: blue;">Challenges</h1>
+        </div>
+        <div class="col-6 text-end">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#challengeModal">
+                Add
+            </button>
+        </div>
+    </div>
+
+    @if (Model != null)
+    {
+        foreach (var challenge in Model)
+        {
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <div class="ms-3">
+                        <p class="fw-bold mb-1">@challenge.Title</p>
+                        <p class="text-muted mb-0">@challenge.Description</p>
+                        <p class="text-muted mb-0">Points: @challenge.Points</p>
+                        <label class="text-muted mb-0">Start Date: @(challenge.StartDate?.ToString("dd-MM-yyyy") ?? "N/A")</label>
+                        <label class="text-muted mb-0">End Date: @(challenge.EndDate?.ToString("dd-MM-yyyy") ?? "N/A")</label>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="edit-challenge btn btn-primary " data-toggle="modal" data-target="#challengeEditModal-@challenge.ChallengeId">
+                        Update
+                    </button>
+                    <form action="@Url.Action("Delete", "Challenge", new { id = challenge.ChallengeId })" method="post" onsubmit="return confirm('Are you sure you want to delete this challenge?');">
+                        <input type="hidden" name="_method" value="DELETE" />
+                        <button type="submit" class="btn btn-link btn-rounded btn-sm">Delete</button>
+                    </form>
+                </div>
+            </li>
+
+
+            <!-- Modal for Editing a Challenge -->
+            <div class="modal fade" id="challengeEditModal-@challenge.ChallengeId" tabindex="-1" role="dialog" aria-labelledby="challengeEditModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="challengeEditModalLabel">Edit Challenge</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="editChallengeForm-@challenge.ChallengeId" action="@Url.Action("Edit", "Challenge", new { id = challenge.ChallengeId })" method="post">
+                                <!-- Form inputs -->
+                                <div class="form-group">
+                                    <label for="EditTitle">Name</label>
+                                    <input type="text" class="form-control" id="EditTitle-@challenge.ChallengeId" name="Title" placeholder="Challenge Name" value="@challenge.Title">
+                                </div>
+                                <div class="form-group">
+                                    <label for="EditDescription">Description</label>
+                                    <textarea class="form-control" id="EditDescription-@challenge.ChallengeId" name="Description" placeholder="Challenge Description">@challenge.Description</textarea>
+
+                                </div>
+                                <div class="form-group">
+                                    <label for="EditPoints">Points</label>
+                                    <input type="number" class="form-control" id="EditPoints-@challenge.ChallengeId" name="Points" placeholder="Points" value="@challenge.Points">
+
+                                </div>
+                                <div class="form-group">
+                                    <label for="EditStartDate">Start Date</label>
+                                    <input type="date" class="form-control" id="EditStartDate-@challenge.ChallengeId" name="StartDate" value="@challenge.StartDate?.ToString("yyyy-MM-dd")">
+
+                                </div>
+                                <div class="form-group">
+                                    <label for="EditEndDate">End Date</label>
+                                    <input type="date" class="form-control" id="EditEndDate-@challenge.ChallengeId" name="EndDate" value="@challenge.EndDate?.ToString("yyyy-MM-dd")">
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        }
+    }
+    else
+    {
+        <p>No challenges available</p>
+    }
+
+    <!-- Modal -->
+    <div class="modal fade" id="challengeModal" tabindex="-1" role="dialog" aria-labelledby="challengeModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="challengeModalLabel">Add Challenges</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="challengeForm" action="@Url.Action("Create", "Challenge")" method="post">
+                        <!-- Form inputs -->
+                        <div class="form-group">
+                            <label for="Title">Name</label>
+                            <input type="text" class="form-control" id="Title" name="Title" placeholder="Challenge Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="Description">Description</label>
+                            <textarea class="form-control" id="Description" name="Description" placeholder="Challenge Description"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="Points">Points</label>
+                            <input type="number" class="form-control" id="Points" name="Points" placeholder="Points">
+                        </div>
+                        <div class="form-group">
+                            <label for="StartDate">Start Date</label>
+                            <input type="date" class="form-control" id="StartDate" name="StartDate">
+                        </div>
+                        <div class="form-group">
+                            <label for="EndDate">End Date</label>
+                            <input type="date" class="form-control" id="EndDate" name="EndDate">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</main>
+<script>
+    // Initialization for ES Users
+    import { Ripple, initMDB } from "mdb-ui-kit";
+
+    initMDB({ Ripple });
+</script>
+
+

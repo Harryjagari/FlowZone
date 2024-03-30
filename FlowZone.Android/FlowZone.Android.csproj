@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	
+
 	<PropertyGroup>
 		<TargetFrameworks>net8.0-android;net8.0-ios;net8.0-maccatalyst</TargetFrameworks>
 		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>
@@ -14,17 +14,17 @@
 		<!-- For example: <RuntimeIdentifiers>maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers> -->
 
 		<OutputType>Exe</OutputType>
-		<RootNamespace>FlowZone</RootNamespace>
+		<RootNamespace>FlowZone.Android</RootNamespace>
 		<UseMaui>true</UseMaui>
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 
 		<!-- Display name -->
-		<ApplicationTitle>FlowZone</ApplicationTitle>
+		<ApplicationTitle>FlowZone.Android</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.flowzone</ApplicationId>
+		<ApplicationId>com.companyname.flowzone.android</ApplicationId>
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
@@ -39,13 +39,15 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<!-- App Icon -->
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+
+		<!-- Splash Screen -->
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
 		<MauiImage Update="Resources\Images\dotnet_bot.png" Resize="True" BaseSize="300,185" />
-		<MauiImage Update="Resources\Images\resource.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</MauiImage>
 
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
@@ -55,91 +57,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Remove="Views\ConfigurationPage.xaml.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<MauiImage Remove="Resources\Images\get_started.svg" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<MauiXaml Remove="Views\ConfigurationPage.xaml" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<None Remove="Resources\Images\get_started.svg" />
-		<None Remove="Resources\Images\logo.png" />
-		<None Remove="Resources\Images\resource.png" />
-		<None Remove="Resources\Splash\Splash1.svg" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<MauiIcon Include="Resources\AppIcon\appicon.png" ForegroundFile="Resources\AppIcon\appiconfg.png" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<MauiSplashScreen Include="Resources\Splash\splash1.svg" BaseSize="128,128">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</MauiSplashScreen>
-	</ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
-		<PackageReference Include="Refit.HttpClientFactory" Version="7.0.0" />
-		<PackageReference Include="SimpleToolkit.Core" Version="4.0.0" />
-		<PackageReference Include="SimpleToolkit.SimpleShell" Version="4.1.0" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\FlowZone.shared\FlowZone.shared.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<MauiXaml Update="Views\Analytics.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\Challenges.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\CreateTodo.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\GetStarted.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\Home.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\Login.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\Notification.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\Pomodoro.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\Profile.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\Register.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\Rewards.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\ToDo.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="Models\" />
-		<Folder Include="Data\" />
-	</ItemGroup>
-	
 </Project>

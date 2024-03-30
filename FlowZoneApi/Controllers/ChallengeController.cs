@@ -32,6 +32,7 @@ namespace FlowZoneApi.Controllers
                 ChallengeId = c.ChallengeId,
                 Title = c.Name,
                 Description = c.Description,
+                Points = c.Points,
                 StartDate = c.StartDate,
                 EndDate = c.EndDate
             }).ToListAsync();
@@ -47,6 +48,7 @@ namespace FlowZoneApi.Controllers
             {
                 Name = challengeDto.Title,
                 Description = challengeDto.Description,
+                Points = challengeDto.Points,
                 StartDate = challengeDto.StartDate,
                 EndDate = challengeDto.EndDate
             };
@@ -72,6 +74,7 @@ namespace FlowZoneApi.Controllers
             // Update challenge properties
             challenge.Name = challengeDto.Title;
             challenge.Description = challengeDto.Description;
+            challenge.Points = challengeDto.Points;
             challenge.StartDate = challengeDto.StartDate;
             challenge.EndDate = challengeDto.EndDate;
 
@@ -95,6 +98,32 @@ namespace FlowZoneApi.Controllers
 
             return NoContent();
         }
+
+
+        // GET: api/Challenge/{id}
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ChallengeDto>> GetChallengeById(Guid id)
+        {
+            var challenge = await _context.Challenges
+                                        .Where(c => c.ChallengeId == id)
+                                        .Select(c => new ChallengeDto
+                                        {
+                                            ChallengeId = c.ChallengeId,
+                                            Title = c.Name,
+                                            Description = c.Description,
+                                            StartDate = c.StartDate,
+                                            EndDate = c.EndDate
+                                        })
+                                        .FirstOrDefaultAsync();
+
+            if (challenge == null)
+            {
+                return NotFound();
+            }
+
+            return challenge;
+        }
+
 
         // DELETE: api/Challenge/{id}
         [HttpDelete("{id}")]

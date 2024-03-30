@@ -7,6 +7,7 @@ namespace FlowZone.shared.Dtos
         public Guid ChallengeId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
+        public int Points { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 

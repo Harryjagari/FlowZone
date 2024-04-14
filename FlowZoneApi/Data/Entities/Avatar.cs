@@ -10,8 +10,8 @@ namespace FlowZoneApi.Data.Entities
 		[Required, MaxLength(50)]
 		public string Name { get; set; }
 
-		[Range(0.1,double.MaxValue)]
-		public double Price { get; set; }
+        [Required]
+        public int Price { get; set; }
 
 		[Required,MaxLength(180)]
 		public string ImagePath { get; set; }

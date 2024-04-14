@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="FlowZone.Views.Avatars"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:dtos="clr-namespace:FlowZone.shared.Dtos;assembly=FlowZone.shared"
+    xmlns:vm="clr-namespace:FlowZone.ViewModels"
+    Title="Avatars"
+    x:DataType="vm:AvatarViewModel">
+    <Grid>
+        <RefreshView
+            Command="{Binding LoadAvatarsCommand}"
+            IsRefreshing="{Binding IsRefreshing}"
+            RefreshColor="DarkBlue">
+
+            <Grid RowDefinitions="Auto,*">
+                <Label
+                    Grid.Row="0"
+                    Padding="5"
+                    FontSize="12"
+                    HorizontalOptions="Center"
+                    Text="Pull to Refresh"
+                    TextColor="DarkBlue" />
+                <ScrollView Grid.Row="1" Padding="5">
+                    <CollectionView ItemsSource="{Binding Avatar}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="dtos:AvatarDto">
+                                <VerticalStackLayout Margin="5,10">
+                                    <Border
+                                        BackgroundColor="white"
+                                        StrokeShape="RoundRectangle 15,0,0,0"
+                                        StrokeThickness="0">
+                                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="15">
+                                            <Image
+                                                Grid.Column="0"
+                                                Aspect="AspectFill"
+                                                HeightRequest="125"
+                                                Source="{Binding ImagePath}"
+                                                WidthRequest="125">
+                                                <Image.Shadow>
+                                                    <Shadow Brush="{StaticResource Primary}" />
+                                                </Image.Shadow>
+                                            </Image>
+                                            <VerticalStackLayout
+                                                Grid.Column="1"
+                                                Spacing="10"
+                                                VerticalOptions="Center">
+                                                <Label
+                                                    FontAttributes="Bold"
+                                                    FontSize="22"
+                                                    Text="{Binding avatarName}"
+                                                    TextColor="DarkBlue" />
+                                                <Label
+                                                    FontSize="18"
+                                                    Text="{Binding avatarPrice, StringFormat='{0:C}'}"
+                                                    TextColor="Red" />
+                                            </VerticalStackLayout>
+
+                                            <Button
+                                                Grid.Column="2"
+                                                BackgroundColor="DarkBlue"
+                                                Clicked="Button_Clicked"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:AvatarViewModel}}, Path=PurchaseAvatar}"
+                                                CommandParameter="{Binding AvatarId}"
+                                                HeightRequest="50"
+                                                HorizontalOptions="EndAndExpand"
+                                                Text="Buy"
+                                                TextColor="White"
+                                                WidthRequest="120" />
+                                        </Grid>
+                                    </Border>
+                                    <BoxView
+                                        Margin="0,-1,0,0"
+                                        HeightRequest="1"
+                                        Opacity="0.3"
+                                        Color="{StaticResource Primary}" />
+
+                                </VerticalStackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </ScrollView>
+
+            </Grid>
+        </RefreshView>
+        <ActivityIndicator
+            HorizontalOptions="Center"
+            IsRunning="{Binding IsBusy}"
+            VerticalOptions="Center"
+            Color="DarkBlue" />
+    </Grid>
+
+</ContentPage>

@@ -22,6 +22,31 @@ namespace FlowZoneApi.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("FlowZoneApi.Data.Entities.Admin", b =>
+                {
+                    b.Property<Guid>("AdminId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AdminPassword")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AdminUserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AdminId");
+
+                    b.ToTable("Admins");
+
+                    b.HasData(
+                        new
+                        {
+                            AdminId = new Guid("851e3a91-14a0-41e4-bfe1-d0dc1265d153"),
+                            AdminPassword = "Harendra123",
+                            AdminUserName = "Harendra"
+                        });
+                });
+
             modelBuilder.Entity("FlowZoneApi.Data.Entities.Avatar", b =>
                 {
                     b.Property<Guid>("AvatarId")
@@ -38,8 +63,8 @@ namespace FlowZoneApi.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
 
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -86,27 +111,6 @@ namespace FlowZoneApi.Migrations
                     b.ToTable("Challenges");
                 });
 
-            modelBuilder.Entity("FlowZoneApi.Data.Entities.Distraction", b =>
-                {
-                    b.Property<Guid>("DistractionId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("PackageName")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<string>("TimeSpan")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("DistractionId");
-
-                    b.ToTable("Distractions");
-                });
-
             modelBuilder.Entity("FlowZoneApi.Data.Entities.ToDo", b =>
                 {
                     b.Property<Guid>("ToDoId")
@@ -124,6 +128,9 @@ namespace FlowZoneApi.Migrations
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsComplete")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Priority")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -134,15 +141,12 @@ namespace FlowZoneApi.Migrations
                         .HasMaxLength(180)
                         .HasColumnType("nvarchar(180)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("UserId1")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("ToDoId");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("ToDos");
                 });
@@ -174,6 +178,15 @@ namespace FlowZoneApi.Migrations
                         .HasMaxLength(180)
                         .HasColumnType("nvarchar(180)");
 
+                    b.Property<string>("ProfilePictureUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ResetPasswordOTP")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ResetPasswordOTPIssueTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Salt")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -197,6 +210,9 @@ namespace FlowZoneApi.Migrations
 
                     b.Property<Guid>("AvatarId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("PurchaseDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -222,6 +238,9 @@ namespace FlowZoneApi.Migrations
                     b.Property<bool>("CompletionStatus")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime>("JoinDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
@@ -232,6 +251,25 @@ namespace FlowZoneApi.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserChallenges");
+                });
+
+            modelBuilder.Entity("FlowZoneApi.Data.Entities.UserToDo", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ToDoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserToDoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("UserId", "ToDoId");
+
+                    b.HasIndex("ToDoId");
+
+                    b.ToTable("UserToDos");
                 });
 
             modelBuilder.Entity("FlowZoneApi.Data.Entities.Avatar", b =>
@@ -251,8 +289,8 @@ namespace FlowZoneApi.Migrations
             modelBuilder.Entity("FlowZoneApi.Data.Entities.ToDo", b =>
                 {
                     b.HasOne("FlowZoneApi.Data.Entities.User", "User")
-                        .WithMany("UserToDos")
-                        .HasForeignKey("UserId1")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -297,6 +335,25 @@ namespace FlowZoneApi.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("FlowZoneApi.Data.Entities.UserToDo", b =>
+                {
+                    b.HasOne("FlowZoneApi.Data.Entities.ToDo", "ToDo")
+                        .WithMany("UserTodos")
+                        .HasForeignKey("ToDoId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("FlowZoneApi.Data.Entities.User", "User")
+                        .WithMany("UserTodos")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("ToDo");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("FlowZoneApi.Data.Entities.Avatar", b =>
                 {
                     b.Navigation("UserAvatars");
@@ -307,13 +364,18 @@ namespace FlowZoneApi.Migrations
                     b.Navigation("UserChallenges");
                 });
 
+            modelBuilder.Entity("FlowZoneApi.Data.Entities.ToDo", b =>
+                {
+                    b.Navigation("UserTodos");
+                });
+
             modelBuilder.Entity("FlowZoneApi.Data.Entities.User", b =>
                 {
                     b.Navigation("UserAvatars");
 
                     b.Navigation("UserChallenges");
 
-                    b.Navigation("UserToDos");
+                    b.Navigation("UserTodos");
                 });
 #pragma warning restore 612, 618
         }

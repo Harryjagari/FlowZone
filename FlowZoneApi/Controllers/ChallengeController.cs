@@ -50,7 +50,7 @@ namespace FlowZoneApi.Controllers
                 Description = challengeDto.Description,
                 Points = challengeDto.Points,
                 StartDate = challengeDto.StartDate,
-                EndDate = challengeDto.EndDate
+                EndDate = challengeDto.EndDate,
             };
 
             _context.Challenges.Add(challenge);

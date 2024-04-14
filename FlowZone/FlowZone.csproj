@@ -42,6 +42,9 @@
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
+		<MauiImage Update="Resources\Images\default_profile_image.jpg">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</MauiImage>
 		<MauiImage Update="Resources\Images\dotnet_bot.png" Resize="True" BaseSize="300,185" />
 		<MauiImage Update="Resources\Images\resource.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -67,6 +70,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Remove="Resources\Images\default_profile_image.jpg" />
 		<None Remove="Resources\Images\get_started.svg" />
 		<None Remove="Resources\Images\logo.png" />
 		<None Remove="Resources\Images\resource.png" />
@@ -84,12 +88,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Maui" Version="8.0.1" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
-		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.20" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.20" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="Refit.HttpClientFactory" Version="7.0.0" />
+		<PackageReference Include="Refractored.MvvmHelpers" Version="1.6.2" />
 		<PackageReference Include="SimpleToolkit.Core" Version="4.0.0" />
 		<PackageReference Include="SimpleToolkit.SimpleShell" Version="4.1.0" />
 	</ItemGroup>
@@ -99,14 +107,23 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Views\MyChallenges.xaml.cs">
+	    <DependentUpon>MyChallenges.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
 		<MauiXaml Update="Views\Analytics.xaml">
 			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\Avatars.xaml">
+		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Views\Challenges.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Views\CreateTodo.xaml">
-			<Generator>MSBuild:Compile</Generator>
+		<MauiXaml Update="Views\ForgetPassword.xaml">
+		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Views\GetStarted.xaml">
 			<Generator>MSBuild:Compile</Generator>
@@ -116,6 +133,9 @@
 		</MauiXaml>
 		<MauiXaml Update="Views\Login.xaml">
 			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\MyChallenges.xaml">
+		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Views\Notification.xaml">
 			<Generator>MSBuild:Compile</Generator>
@@ -129,17 +149,18 @@
 		<MauiXaml Update="Views\Register.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Views\Rewards.xaml">
-			<Generator>MSBuild:Compile</Generator>
+		<MauiXaml Update="Views\ResetPassword.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\ResetPasswordWithOTP.xaml">
+		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Views\ToDo.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="Models\" />
-		<Folder Include="Data\" />
+		<MauiXaml Update="Views\UpdateToDo.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 	</ItemGroup>
 	
 </Project>

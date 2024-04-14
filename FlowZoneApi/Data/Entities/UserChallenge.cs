@@ -13,6 +13,8 @@ namespace FlowZoneApi.Data.Entities
         public Guid ChallengeId { get; set; }
         public Challenge Challenge { get; set; }
 
+        public DateTime JoinDate { get; set; }
+
         // Define a composite primary key using UserId and ChallengeId
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

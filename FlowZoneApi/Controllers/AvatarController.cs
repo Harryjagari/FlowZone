@@ -2,14 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using FlowZoneApi.Data;
 using FlowZoneApi.Data.Entities;
-using FlowZone.shared;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using FlowZone.shared.Dtos;
-using Microsoft.AspNetCore.Hosting;
 
 namespace FlowZoneApi.Controllers
 {
@@ -25,6 +18,7 @@ namespace FlowZoneApi.Controllers
         }
 
         [HttpGet]
+
         public async Task<ActionResult<IEnumerable<AvatarDto>>> GetAvatars()
         {
             var avatars = await _context.Avatars.Select(a => new AvatarDto
@@ -38,31 +32,36 @@ namespace FlowZoneApi.Controllers
             return Ok(avatars);
         }
 
-
-        [HttpGet("ById/{id}")]
-        public async Task<IActionResult> GetAvatarById(Guid id)
+        private static string GetImagePath(string imagePath)
         {
-            var avatar = await _context.Avatars.FindAsync(id);
-
-            if (avatar == null)
-            {
-                return NotFound(); 
-            }
-
-            return Ok(avatar);
-        }
-
-
-        // Helper method to get full image path
-        private static string GetImagePath(string imageName)
-        {
-            if (string.IsNullOrEmpty(imageName))
+            if (string.IsNullOrEmpty(imagePath))
             {
                 return null;
             }
-            return Path.Combine("/api/Avatar/image/", imageName);
+
+            // Extract the file name from the full file path
+            string imageName = Path.GetFileName(imagePath);
+            return $"{imageName}";
         }
 
+        [HttpGet("image/{imageName}")]
+        public IActionResult GetImage(string imageName)
+        {
+            // Assuming images are stored in the wwwroot/Images directory
+            var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images", imageName);
+
+            if (System.IO.File.Exists(imagePath))
+            {
+                // Read the image file and return as a FileResult
+                var imageFileStream = System.IO.File.OpenRead(imagePath);
+                return File(imageFileStream, "image/jpeg"); // Adjust content type based on image type
+            }
+            else
+            {
+                // Return a placeholder image or an error response
+                return NotFound();
+            }
+        }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromForm]AvatarRequestDto model)
@@ -165,6 +164,19 @@ namespace FlowZoneApi.Controllers
                     System.IO.File.Delete(filePath);
                 }
             }
+        }
+
+        [HttpGet("ById/{id}")]
+        public async Task<IActionResult> GetAvatarById(Guid id)
+        {
+            var avatar = await _context.Avatars.FindAsync(id);
+
+            if (avatar == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(avatar);
         }
 
     }

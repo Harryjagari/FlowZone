@@ -1,12 +1,149 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="FlowZone.Views.Home"
-             Title="Home">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+<ContentPage
+    x:Class="FlowZone.Views.Home"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:dtos="clr-namespace:FlowZone.shared.Dtos;assembly=FlowZone.shared"
+    xmlns:vm="clr-namespace:FlowZone.ViewModels"
+    Title="Home"
+    x:DataType="vm:HomeViewModel">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <RefreshView
+            Grid.Row="0"
+            Command="{Binding LoadProfileCommand}"
+            IsRefreshing="{Binding IsRefreshing}"
+            RefreshColor="DarkBlue">
+
+            <Grid RowDefinitions="Auto,*">
+                <Label
+                    Padding="5"
+                    FontSize="12"
+                    HorizontalOptions="Center"
+                    Text="Pull to Refresh"
+                    TextColor="DarkBlue" />
+                <CollectionView ItemsSource="{Binding Profile}">
+                    <CollectionView.ItemTemplate>
+
+                        <!--  DataTemplate for ProfileDto  -->
+                        <DataTemplate x:DataType="dtos:ProfileDto">
+                            <VerticalStackLayout Margin="5">
+                                <Border
+                                    BackgroundColor="white"
+                                    StrokeShape="RoundRectangle 15"
+                                    StrokeThickness="0">
+                                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                                        <Image
+                                            Grid.Column="0"
+                                            Aspect="AspectFill"
+                                            HeightRequest="125"
+                                            Source="{Binding ProfilePictureUrl}"
+                                            WidthRequest="125">
+                                            <Image.Shadow>
+                                                <Shadow Brush="{StaticResource Primary}" />
+                                            </Image.Shadow>
+                                        </Image>
+
+                                        <StackLayout Grid.Column="1">
+                                            <Label
+                                                FontAttributes="Bold"
+                                                FontSize="20"
+                                                Text="{Binding UserName}"
+                                                TextColor="DarkBlue" />
+                                            <Label FontSize="16" Text="{Binding Email}" />
+                                        </StackLayout>
+                                    </Grid>
+                                </Border>
+                                <BoxView
+                                    Margin="0,-1,0,0"
+                                    HeightRequest="1"
+                                    Opacity="0.3"
+                                    Color="{StaticResource Primary}" />
+                                <VerticalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnProfileTapped" />
+                                </VerticalStackLayout.GestureRecognizers>
+                            </VerticalStackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </RefreshView>
+
+        <Label
+            Grid.Row="1"
+            Margin="0,-150,0,20"
+            Padding="25"
+            FontSize="22"
+            HorizontalOptions="Center"
+            Text="ToDos"
+            TextColor="DarkBlue" />
+        <!--  DataTemplate for ToDoDto  -->
+        <RefreshView
+            Grid.Row="2"
+            Command="{Binding LoadToDosCommand}"
+            IsRefreshing="{Binding IsRefreshing}"
+            RefreshColor="DarkBlue">
+
+            <Grid RowDefinitions="Auto,*">
+                <CollectionView
+                    ItemsSource="{Binding ToDos}"
+                    SelectedItem="{Binding SelectedToDoItem, Mode=TwoWay}"
+                    SelectionChanged="OnToDoSelected"
+                    SelectionMode="Single">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="dtos:ToDoDto">
+                            <VerticalStackLayout>
+                                <Border
+                                    Margin="5"
+                                    BackgroundColor="Red"
+                                    StrokeShape="RoundRectangle 15"
+                                    StrokeThickness="0">
+                                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                                        <StackLayout Grid.Column="1">
+                                            <Label FontSize="20" Text="{Binding Title}" />
+                                            <Label FontSize="16" Text="{Binding Description}" />
+                                            <Label FontSize="16" Text="{Binding Created}" />
+                                            <Label FontSize="16" Text="{Binding DueDate}" />
+                                            <Label FontSize="16" Text="{Binding Priority}" />
+                                        </StackLayout>
+                                        <StackLayout Grid.Column="2">
+                                            <Button
+                                                BackgroundColor="Red"
+                                                Clicked="Button2_Clicked"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ToDoViewModel}}, Path=DeleteToDo}"
+                                                CommandParameter="{Binding ToDoId}"
+                                                HeightRequest="50"
+                                                HorizontalOptions="EndAndExpand"
+                                                Text="Delete"
+                                                TextColor="DarkBlue"
+                                                WidthRequest="120" />
+                                            <Button
+                                                BackgroundColor="Red"
+                                                Clicked="Button1_Clicked"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ToDoViewModel}}, Path=CompleteToDo}"
+                                                CommandParameter="{Binding ToDoId}"
+                                                HeightRequest="50"
+                                                HorizontalOptions="EndAndExpand"
+                                                Text="Complete"
+                                                TextColor="DarkBlue"
+                                                WidthRequest="120" />
+                                        </StackLayout>
+                                    </Grid>
+                                </Border>
+                                <!--<VerticalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnUpdateTapped" />
+                                </VerticalStackLayout.GestureRecognizers>-->
+                            </VerticalStackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </RefreshView>
+    </Grid>
 </ContentPage>

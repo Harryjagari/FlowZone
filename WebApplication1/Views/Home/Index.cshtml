@@ -1,8 +1,35 @@
-﻿@{
+﻿@model WebApplication1.Models.DashboardViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container">
+    <h1 class="text-center mt-4">Dashboard</h1>
+
+    <div class="row mt-4">
+        <div class="col-md-4 mb-4">
+            <div class="card bg-primary">
+                <div class="card-body">
+                    <h5 class="card-title text-white">Users</h5>
+                    <p class="card-text text-white">@Model.UserCount</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card bg-primary">
+                <div class="card-body">
+                    <h5 class="card-title text-white">Avatars</h5>
+                    <p class="card-text text-white">@Model.AvatarCount</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card bg-primary">
+                <div class="card-body">
+                    <h5 class="card-title text-white">Challenges</h5>
+                    <p class="card-text text-white">@Model.ChallengeCount</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

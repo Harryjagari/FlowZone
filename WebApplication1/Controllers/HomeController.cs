@@ -1,36 +1,58 @@
+using FlowZone.shared.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Threading.Tasks;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IHttpClientFactory _clientFactory;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IHttpClientFactory clientFactory)
         {
-            _logger = logger;
-        }
-
-        public IActionResult Index()
-        {
-            return View();
+            _clientFactory = clientFactory;
         }
 
-        public IActionResult Avatars()
+        public async Task<IActionResult> Index()
         {
-            return View();
-        }
-        public IActionResult Challenges()
-        {
-            return View();
+            try
+            {
+                var client = _clientFactory.CreateClient();
+
+                // Fetch user count
+                var userCountResponse = await client.GetAsync("https://localhost:7026/api/Dashboard/user-count");
+                var userCount = await userCountResponse.Content.ReadFromJsonAsync<int>();
+
+                // Fetch avatar count
+                var avatarCountResponse = await client.GetAsync("https://localhost:7026/api/Dashboard/avatar-count");
+                var avatarCount = await avatarCountResponse.Content.ReadFromJsonAsync<int>();
+
+                // Fetch challenge count
+                var challengeCountResponse = await client.GetAsync("https://localhost:7026/api/Dashboard/challenge-count");
+                var challengeCount = await challengeCountResponse.Content.ReadFromJsonAsync<int>();
+
+
+                var dashboardData = new DashboardViewModel
+                {
+                    UserCount = userCount,
+                    AvatarCount = avatarCount,
+                    ChallengeCount = challengeCount,
+                };
+
+                return View(dashboardData); // Pass dashboardData to the view
+            }
+            catch (Exception ex)
+            {
+                // Log or handle the exception
+                return View("Error");
+            }
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
 }

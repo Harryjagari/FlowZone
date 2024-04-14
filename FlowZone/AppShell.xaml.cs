@@ -18,7 +18,14 @@ namespace FlowZone
 			[
 				typeof(Login),
 				typeof(Register),
-			];
+                typeof(ToDo),
+				typeof(Pomodoro),
+				typeof(MyChallenges),
+				typeof(Challenges),
+				typeof (UpdateToDo),
+				typeof(ResetPassword),
+				typeof(ToDoView),
+            ];
 
 		private static void RegisterRoutes()
 		{
@@ -30,11 +37,33 @@ namespace FlowZone
 
 		private async void OnSignOutTapped(object sender, EventArgs e)
 		{
-			// Add your logic here for handling the skip button click event
-			//await DisplayAlert("Logout", "Logout button clicked!", "OK");
-			//await Navigation.PushAsync(new GetStarted());
 			_authService.Signout();
 			await Shell.Current.GoToAsync($"//{nameof(GetStarted)}");
 		}
-	}
+
+		private async void OnTodoTapped(object sender, EventArgs e)
+		{
+            FlyoutIsPresented = false;
+            await Shell.Current.GoToAsync(nameof(ToDoView));
+		}
+
+		private async void OnPomodoroTapped(object sender, EventArgs e)
+        {
+            FlyoutIsPresented = false;
+            await Shell.Current.GoToAsync(nameof(Pomodoro));
+        }
+
+        private async void OnMyChallengesTapped(object sender, EventArgs e)
+        {
+            FlyoutIsPresented = false;
+            await Shell.Current.GoToAsync(nameof(MyChallenges));
+        }
+
+        private async void OnChallengeTapped(object sender, EventArgs e)
+        {
+            FlyoutIsPresented = false;
+            await Shell.Current.GoToAsync(nameof(Challenges));
+        }
+
+    }
 }

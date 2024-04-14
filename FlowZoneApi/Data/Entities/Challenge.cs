@@ -23,7 +23,7 @@ namespace FlowZoneApi.Data.Entities
 		[Required]
 		public DateTime EndDate { get; set; }
 
-		        // Navigation property
+        // Navigation property
         public List<UserChallenge> UserChallenges { get; set; }
 
 	}

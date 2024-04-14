@@ -1,12 +1,137 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="FlowZone.Views.Profile"
-             Title="Profile">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+<ContentPage
+    x:Class="FlowZone.Views.Profile"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:dtos="clr-namespace:FlowZone.shared.Dtos;assembly=FlowZone.shared"
+    xmlns:vm="clr-namespace:FlowZone.ViewModels"
+    Title="Profile"
+    x:DataType="vm:ProfileViewModel">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <RefreshView
+            Grid.Row="0"
+            Command="{Binding LoadProfileCommand}"
+            IsRefreshing="{Binding IsRefreshing}"
+            RefreshColor="DarkBlue">
+
+            <Grid RowDefinitions="Auto,*">
+                <CollectionView ItemsSource="{Binding Profile}">
+                    <CollectionView.ItemTemplate>
+
+                        <!--  DataTemplate for ProfileDto  -->
+                        <DataTemplate x:DataType="dtos:ProfileDto">
+                            <VerticalStackLayout Margin="5">
+                                <Border
+                                    BackgroundColor="white"
+                                    HeightRequest="100"
+                                    StrokeShape="RoundRectangle 50"
+                                    StrokeThickness="0"
+                                    WidthRequest="100">
+                                    <Image
+                                        Aspect="AspectFill"
+                                        HeightRequest="125"
+                                        Source="{Binding ProfilePictureUrl}"
+                                        WidthRequest="125">
+                                        <Image.Shadow>
+                                            <Shadow Brush="{StaticResource Primary}" />
+                                        </Image.Shadow>
+                                    </Image>
+                                </Border>
+                                <VerticalStackLayout Grid.Column="0">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="20"
+                                        HorizontalOptions="Center"
+                                        Text="{Binding UserName}"
+                                        TextColor="DarkBlue" />
+                                    <Label
+                                        FontSize="16"
+                                        HorizontalOptions="Center"
+                                        Text="{Binding Email}"
+                                        TextColor="DarkBlue" />
+                                    <Label
+                                        FontSize="16"
+                                        HorizontalOptions="Center"
+                                        Text="{Binding Address}"
+                                        TextColor="DarkBlue" />
+                                    <Label
+                                        Margin="30"
+                                        FontAttributes="Bold"
+                                        FontSize="22"
+                                        HorizontalOptions="Center"
+                                        Text="Reset Password"
+                                        TextColor="Green">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="OnResetTapped" />
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                </VerticalStackLayout>
+                                <VerticalStackLayout />
+                            </VerticalStackLayout>
+
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </RefreshView>
+
+        <Label
+            Grid.Row="1"
+            Margin="0,10,0,5"
+            FontSize="Title"
+            HorizontalOptions="Center"
+            Text="Purchased Avatars" />
+        <RefreshView
+            Grid.Row="2"
+            Command="{Binding LoadUserAvatarsCommand}"
+            IsRefreshing="{Binding IsRefreshing}"
+            RefreshColor="DarkBlue">
+
+            <Grid RowDefinitions="Auto,*">
+                <ScrollView>
+                    <VerticalStackLayout>
+
+                        <CollectionView ItemsSource="{Binding UserAvatar}">
+                            <CollectionView.ItemsLayout>
+                                <GridItemsLayout
+                                    HorizontalItemSpacing="15"
+                                    Orientation="Vertical"
+                                    Span="2"
+                                    VerticalItemSpacing="15" />
+                            </CollectionView.ItemsLayout>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="dtos:UserAvatarDto">
+                                    <Border StrokeShape="RoundRectangle 50,50,0,0" StrokeThickness="0">
+                                        <VerticalStackLayout Spacing="5">
+                                            <Grid>
+                                                <Image
+                                                    Aspect="AspectFill"
+                                                    HeightRequest="150"
+                                                    Source="{Binding ImagePath}" />
+                                                <Button
+                                                    Margin="-5"
+                                                    Clicked="SetProfileButton"
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ProfileViewModel}}, Path=SetProfile}"
+                                                    CommandParameter="{Binding AvatarId}"
+                                                    HorizontalOptions="Center"
+                                                    Text="Set"
+                                                    VerticalOptions="End" />
+                                            </Grid>
+                                        </VerticalStackLayout>
+                                    </Border>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </VerticalStackLayout>
+                </ScrollView>
+            </Grid>
+        </RefreshView>
+    </Grid>
 </ContentPage>

@@ -26,7 +26,7 @@ namespace FlowZoneApi.Services
 			var securityKey = GetSecurityKey(_configuration);
 			var credentials = new SigningCredentials(securityKey,SecurityAlgorithms.HmacSha256);
 			var issuer = _configuration["Jwt:Issuer"];
-			var expireInMinutes = Convert.ToInt32(_configuration["Jwt:ExpireInMinutes"]);
+			var expireInDays = Convert.ToInt32(_configuration["Jwt:ExpireInDays"]);
 
 			Claim[] claims = [
 				new Claim(ClaimTypes.NameIdentifier,user.UserId.ToString()),
@@ -39,7 +39,7 @@ namespace FlowZoneApi.Services
 				issuer: issuer,
 				audience: "*",
 				claims: claims,
-				expires: DateTime.Now.AddMinutes(expireInMinutes),
+				expires: DateTime.Now.AddDays(expireInDays),
 				signingCredentials: credentials);
 			var jwt = new JwtSecurityTokenHandler().WriteToken(token);
 

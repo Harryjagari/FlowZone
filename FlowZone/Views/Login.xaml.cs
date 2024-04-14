@@ -1,3 +1,4 @@
+using CommunityToolkit.Maui.Views;
 using FlowZone.ViewModels;
 
 namespace FlowZone.Views;
@@ -17,8 +18,8 @@ public partial class Login : ContentPage
 
 	private async void OnForgotPasswordTapped(object sender, EventArgs e)
 	{
-		// Add your logic here for handling the skip button click event
-		await DisplayAlert("Forget password", "Forget password button clicked!", "OK");
-		//await Navigation.PushAsync(new GetStarted());
-	}
+        var popup = new ForgetPassword();
+        Shell.Current.CurrentPage.ShowPopup(popup);
+    }
+
 }

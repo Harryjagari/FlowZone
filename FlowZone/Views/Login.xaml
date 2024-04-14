@@ -1,35 +1,73 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:vm="clr-namespace:FlowZone.ViewModels"
-             x:Class="FlowZone.Views.Login"
-             Title="Login"
-             x:DataType="vm:AuthViewModel"
-             Shell.FlyoutBehavior="Disabled">
+<ContentPage
+    x:Class="FlowZone.Views.Login"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:FlowZone.ViewModels"
+    Title="Login"
+    x:DataType="vm:AuthViewModel"
+    Shell.FlyoutBehavior="Disabled">
     <ContentPage.Content>
-        <StackLayout VerticalOptions="CenterAndExpand" Padding="20">
-            <Label Text="Login" FontSize="24" HorizontalOptions="Center" Margin="0,0,0,20"/>
-            <Entry Placeholder="Username" Text="{Binding Email}" Margin="0,0,0,10"/>
-            <Entry Placeholder="Password" IsPassword="True" Text="{Binding Password}" Margin="0,0,0,10"/>
-            <Button Text="Login" IsEnabled="{Binding CanSignin}" Command="{Binding SigninCommand}" HorizontalOptions="FillAndExpand"/>
-            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+        <StackLayout Padding="20" VerticalOptions="CenterAndExpand">
+            <Image
+                Aspect="AspectFit"
+                HeightRequest="200"
+                HorizontalOptions="CenterAndExpand"
+                Source="resource.png"
+                VerticalOptions="CenterAndExpand" />
+            <Label
+                Margin="0,0,0,20"
+                FontSize="24"
+                HorizontalOptions="Center"
+                Text="Login" />
+            <Border Margin="10" StrokeShape="RoundRectangle 15">
+                <Entry
+                    Margin="0,0,0,10"
+                    Placeholder="Username"
+                    PlaceholderColor="DarkBlue"
+                    Text="{Binding Email}" />
+            </Border>
+            <Border Margin="10" StrokeShape="RoundRectangle 15">
+                <Entry
+                    Margin="0,0,0,10"
+                    IsPassword="True"
+                    Placeholder="Password"
+                    PlaceholderColor="DarkBlue"
+                    Text="{Binding Password}" />
+            </Border>
+            <Button
+                BackgroundColor="DarkBlue"
+                Command="{Binding SigninCommand}"
+                HorizontalOptions="FillAndExpand"
+                IsEnabled="{Binding CanSignin}"
+                Text="Login"
+                TextColor="White" />
+            <StackLayout HorizontalOptions="Center" Orientation="Horizontal">
                 <Label Text="Don't have an account? " />
-                <Label Text="Sign up" TextColor="Blue" Margin="0,0,5,0" FontAttributes="Bold">
+                <Label
+                    Margin="0,0,5,0"
+                    FontAttributes="Bold"
+                    Text="Sign up"
+                    TextColor="Blue">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnSignUpTapped" />
                     </Label.GestureRecognizers>
                 </Label>
             </StackLayout>
-            <Label Text="Forgot password?" TextColor="Blue" Margin="0,10,0,0" HorizontalOptions="Center">
+            <Label
+                Margin="0,10,0,0"
+                HorizontalOptions="Center"
+                Text="Forgot password?"
+                TextColor="Blue">
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Tapped="OnForgotPasswordTapped" />
                 </Label.GestureRecognizers>
             </Label>
-            <ActivityIndicator HorizontalOptions="Center"
-                           VerticalOptions="Center"
-                           Color="DarkBlue"
-                           IsRunning="{Binding IsBusy}">
-            </ActivityIndicator>
+            <ActivityIndicator
+                HorizontalOptions="Center"
+                IsRunning="{Binding IsBusy}"
+                VerticalOptions="Center"
+                Color="DarkBlue" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

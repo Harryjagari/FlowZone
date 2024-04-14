@@ -11,13 +11,16 @@ using System.Threading.Tasks;
 
 namespace FlowZone.ViewModels
 {
-	public partial class AuthViewModel(IAuthApi authApi, AuthService authService): BaseViewModel
+	public partial class AuthViewModel(IAuthApi authApi, AuthService authService, CommonService commonService) : BaseViewModel
 	{
+
 		private readonly IAuthApi _authApi=authApi;
 
 		private readonly AuthService _authService=authService;
-		
-		[ObservableProperty]
+
+        private readonly CommonService _commonService = commonService;
+
+        [ObservableProperty]
 		private bool _isBusy;
 
 		[ObservableProperty,NotifyPropertyChangedFor(nameof(CanSignup))]

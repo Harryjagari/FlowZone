@@ -20,34 +20,39 @@ namespace FlowZoneApi.Controllers
         [HttpPost]
         public async Task<ResultWithDataDto<AuthResponseDto>> SignupAsync(SignupRequestDto dto)
         {
-            if (await _context.Users.AsNoTracking().AnyAsync(u => u.Email == dto.Email))
-                if (await _context.Users.AsNoTracking().AnyAsync(u => u.Email == dto.Email))
-                {
-                    return ResultWithDataDto<AuthResponseDto>.Failure("Email already exist");
-                }
-
-            var user = new User
-            {
-                Email = dto.Email,
-                Address = dto.Address,
-                UserName = dto.Name,
-            };
-
-            (user.Salt, user.Hash) = _passwordService.GenerateSaltAndHash(dto.Password);
-
             try
             {
+                if (await _context.Users.AsNoTracking().AnyAsync(u => u.Email == dto.Email))
+                {
+                    return ResultWithDataDto<AuthResponseDto>.Failure("Email already exists");
+                }
+
+                var user = new User
+                {
+                    Email = dto.Email,
+                    Address = dto.Address,
+                    UserName = dto.Name,
+                };
+
+                (user.Salt, user.Hash) = _passwordService.GenerateSaltAndHash(dto.Password);
+
                 await _context.Users.AddAsync(user);
                 await _context.SaveChangesAsync();
-                return GenerateAuthResponse(user);
 
+                return GenerateAuthResponse(user);
             }
             catch (Exception ex)
             {
-                return ResultWithDataDto<AuthResponseDto>.Failure(ex.Message);
-            }
+                string errorMessage = "An error occurred while saving the entity changes.";
+                if (ex.InnerException != null)
+                {
+                    errorMessage += " Inner Exception: " + ex.InnerException.Message;
+                }
 
+                return ResultWithDataDto<AuthResponseDto>.Failure(errorMessage);
+            }
         }
+
 
         private ResultWithDataDto<AuthResponseDto> GenerateAuthResponse(User user)
         {

@@ -37,9 +37,9 @@
                     <button type="button" class="edit-challenge btn btn-primary " data-toggle="modal" data-target="#challengeEditModal-@challenge.ChallengeId">
                         Update
                     </button>
-                    <form action="@Url.Action("Delete", "Challenge", new { id = challenge.ChallengeId })" method="post" onsubmit="return confirm('Are you sure you want to delete this challenge?');">
+                    <form action="@Url.Action("Delete", "Challenge", new { id = challenge.ChallengeId })" method="post" onsubmit="return confirm('Are you sure you want to delete this challenge?');" style="margin-left: 8px;">
                         <input type="hidden" name="_method" value="DELETE" />
-                        <button type="submit" class="btn btn-link btn-rounded btn-sm">Delete</button>
+                        <button type="submit" class="btn btn-danger">Delete</button>
                     </form>
                 </div>
             </li>

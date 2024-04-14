@@ -29,10 +29,16 @@ namespace FlowZoneApi.Data.Entities
 		[Required]
 		public int EarnedPoints { get; set; }
 
+        public string ? ResetPasswordOTP { get; set; }
+        public DateTime? ResetPasswordOTPIssueTime { get; set; }
+
+        public string? ProfilePictureUrl { get; set; }
+
         // Navigation property
-        public List<ToDo> UserToDos { get; set; }
+        public List<UserToDo> UserTodos { get; set; }
         public List<Challenge> UserChallenges { get; set; }
         public List<Avatar> UserAvatars { get; set; }
+
 
     }
 

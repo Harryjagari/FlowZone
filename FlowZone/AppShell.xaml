@@ -5,238 +5,140 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:FlowZone"
     xmlns:pages="clr-namespace:FlowZone.Views"
-    Shell.FlyoutBehavior="Flyout"
-    Title="FlowZone">
+    Title="FlowZone"
+    Shell.FlyoutBehavior="Flyout">
 
     <!--<ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />-->
 
-    <ShellContent ContentTemplate="{DataTemplate pages:GetStarted}"
-                  Shell.FlyoutBehavior="Disabled"
-                  Shell.FlyoutItemIsVisible="False"
-                  Route="GetStarted"/>
+    <ShellContent
+        ContentTemplate="{DataTemplate pages:GetStarted}"
+        Route="GetStarted"
+        Shell.FlyoutBehavior="Disabled"
+        Shell.FlyoutItemIsVisible="False" />
 
     <TabBar FlyoutDisplayOptions="AsMultipleItems">
         <ShellContent
             Title="Home"
             ContentTemplate="{DataTemplate pages:Home}"
             Icon="Home"
-            Route="Home" 
-            Shell.FlyoutBehavior="Flyout"/>
+            Route="Home"
+            Shell.FlyoutBehavior="Flyout" />
         <ShellContent
-            Title="Tasks"
+            Title="ToDo"
             ContentTemplate="{DataTemplate pages:ToDo}"
             Icon="Home"
             Route="ToDo" />
         <ShellContent
-            Title="Pomodoro"
-            ContentTemplate="{DataTemplate pages:Pomodoro}"
+            Title="Avatars"
+            ContentTemplate="{DataTemplate pages:Avatars}"
             Icon="Home"
-            Route="Pomodoro" />
+            Route="Avatars" />
         <ShellContent
             Title="Profile"
             ContentTemplate="{DataTemplate pages:Profile}"
             Icon="Home"
             Route="Profile" />
-
     </TabBar>
 
-    <MenuItem Text="Signout"
-              IconImageSource="Home"
-              Clicked="OnSignOutTapped"/>
+    <MenuItem
+        Clicked="OnTodoTapped"
+        IconImageSource="Home"
+        Text="My Tasks" />
+    <MenuItem
+        Clicked="OnChallengeTapped"
+        IconImageSource="Home"
+        Text="Challenges" />
+    <MenuItem
+        Clicked="OnPomodoroTapped"
+        IconImageSource="Home"
+        Text="Pomodoro" />
+    <MenuItem
+        Clicked="OnMyChallengesTapped"
+        IconImageSource="Home"
+        Text="My Challenges" />
+    <MenuItem
+        Clicked="OnSignOutTapped"
+        IconImageSource="Home"
+        Text="Signout" />
+
 
     <Shell.ItemTemplate>
         <DataTemplate>
-            <Grid ColumnDefinitions="Auto,*" 
-                  Padding="10"
-                  ColumnSpacing="15">
+            <Grid
+                Padding="10"
+                ColumnDefinitions="Auto,*"
+                ColumnSpacing="15">
                 <Image
                     Grid.Column="0"
                     HeightRequest="24"
                     Source="{Binding FlyoutIcon}"
-                    WidthRequest="24"/>
+                    WidthRequest="24" />
                 <Label
                     Grid.Column="1"
                     FontSize="16"
                     Text="{Binding Title}"
-                    TextColor="SkyBlue"/>
+                    TextColor="SkyBlue" />
             </Grid>
         </DataTemplate>
     </Shell.ItemTemplate>
 
     <Shell.MenuItemTemplate>
         <DataTemplate>
-            <Grid ColumnDefinitions="Auto,*" 
-                  Padding="10"
-                  ColumnSpacing="15">
+            <Grid
+                Padding="10"
+                ColumnDefinitions="Auto,*"
+                ColumnSpacing="15">
                 <Image
-                     Grid.Column="0"
-                     HeightRequest="24"
-                     Source="{Binding FlyoutIcon}"
-                     WidthRequest="24"/>
+                    Grid.Column="0"
+                    HeightRequest="24"
+                    Source="{Binding FlyoutIcon}"
+                    WidthRequest="24" />
                 <Label
-                     Grid.Column="1"
-                     FontSize="16"
-                     Text="{Binding Title}"
-                     TextColor="SkyBlue"/>
+                    Grid.Column="1"
+                    FontSize="16"
+                    Text="{Binding Title}"
+                    TextColor="SkyBlue" />
             </Grid>
         </DataTemplate>
     </Shell.MenuItemTemplate>
-    
-    <!--<Shell.FlyoutHeader>
-        --><!--<Border BackgroundColor="DarkBlue"
-                Padding="10"
-                StrokeThickness="0">
-            <VerticalStackLayout HorizontalOptions="Center"
-                                 Spacing="10">
-            <Label Text=" Harendra Jagari"
-                   HorizontalOptions="StartAndExpand"
-                   FontAttributes="Bold"
-                   FontSize="14"
-                   TextColor="White"
-                   TextTransform="Uppercase"/>
-            </VerticalStackLayout>
-        </Border>--><!--
 
-
-        <Grid
-    x:Name="flyout"
-    HorizontalOptions="Start" VerticalOptions="Fill"
-    Background="{AppThemeBinding Light=White, Dark=Black}"
-    WidthRequest="280"
-    Shadow="{OnPlatform Default={x:Null}, iOS={Shadow Brush=Black, Opacity=0.3}}">
-            --><!-- TODO: On Android, TranslationX does not work when Shadow is set --><!--
-
-            <Path
-        Fill="Transparent"
-        Stroke="LightGray"
-        StrokeThickness="10"
-        Opacity="0.3">
-                <Path.Data>
-                    <GeometryGroup>
-                        <EllipseGeometry
-                    RadiusX="75"
-                    RadiusY="75"
-                    Center="30,25" />
-                        <EllipseGeometry
-                    RadiusX="55"
-                    RadiusY="55"
-                    Center="20,120" />
-                    </GeometryGroup>
-                </Path.Data>
-            </Path>
-
-            <Grid
-        x:Name="flyoutContent"
-        RowDefinitions="120, *, auto">
-                <Grid
-            ColumnDefinitions="auto, *"
-            ColumnSpacing="15"
-            Padding="20, 0">
-                    <Border
-                HorizontalOptions="Start" VerticalOptions="Center"
-                WidthRequest="65" HeightRequest="65"
-                StrokeShape="{Ellipse}"
-                StrokeThickness="0">
-                        <Image
-                    Source="avatar.jpg"
-                    Aspect="AspectFill"
-                    Background="Black"/>
-                    </Border>
-
-                    <VerticalStackLayout
-                Grid.Column="1"
-                VerticalOptions="Center">
-                        <Label
-                    Text="Angel Fernandus"
-                    FontSize="19"
-                    FontFamily="NunitoSemiBold"
-                    TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
-                        <Label
-                    Text="angel_fernandus"
-                    FontSize="13"
-                    TextColor="Gray"/>
-                    </VerticalStackLayout>
-                </Grid>
-    </Shell.FlyoutHeader>-->
 
     <Shell.FlyoutHeader>
         <Grid
-        x:Name="flyout"
-        HorizontalOptions="Start" VerticalOptions="Fill"
-        Background="{AppThemeBinding Light=White, Dark=Black}"
-        WidthRequest="280"
-        Shadow="{OnPlatform Default={x:Null}, iOS={Shadow Brush=Black, Opacity=0.3}}">
-            <!-- TODO: On Android, TranslationX does not work when Shadow is set -->
+            Background="{AppThemeBinding Light=SkyBlue,
+                                         Dark=Black}"
+            HeightRequest="80"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            WidthRequest="500">
 
-            <Path
-            Fill="Transparent"
-            Stroke="LightGray"
-            StrokeThickness="10"
-            Opacity="0.3">
-                <Path.Data>
-                    <GeometryGroup>
-                        <EllipseGeometry
-                        RadiusX="75"
-                        RadiusY="75"
-                        Center="30,25" />
-                        <EllipseGeometry
-                        RadiusX="55"
-                        RadiusY="55"
-                        Center="20,120" />
-                    </GeometryGroup>
-                </Path.Data>
-            </Path>
-
-            <Grid
-            x:Name="flyoutContent"
-            RowDefinitions="120, *, auto">
-                <Grid
-                ColumnDefinitions="auto, *"
-                ColumnSpacing="15"
-                Padding="20, 0">
-                    <Border
-                    HorizontalOptions="Start" VerticalOptions="Center"
-                    WidthRequest="65" HeightRequest="65"
-                    StrokeShape="{Ellipse}"
-                    StrokeThickness="0">
-                        <Image
-                        Source="avatar.jpg"
-                        Aspect="AspectFill"
-                        Background="Black"/>
-                    </Border>
-
-                    <VerticalStackLayout
-                    Grid.Column="1"
-                    VerticalOptions="Center">
-                        <Label
-                        Text="Angel Fernandus"
-                        FontSize="19"
-                        FontFamily="NunitoSemiBold"
-                        TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
-                        <Label
-                        Text="angel_fernandus"
-                        FontSize="13"
-                        TextColor="Gray"/>
-                    </VerticalStackLayout>
-                </Grid>
-            </Grid>
+            <!--  Your app name label  -->
+            <Label
+                FontAttributes="Bold"
+                FontSize="24"
+                HorizontalOptions="Center"
+                Text="FlowZone"
+                TextColor="{AppThemeBinding Light=Black,
+                                            Dark=White}"
+                VerticalOptions="Center" />
         </Grid>
     </Shell.FlyoutHeader>
 
 
     <Shell.FlyoutFooter>
-        <Border BackgroundColor="DarkBlue"
-                StrokeThickness="0"
-                Padding="10">
+        <Border
+            Padding="10"
+            BackgroundColor="DarkBlue"
+            StrokeThickness="0">
             <Label
-                Text="Copyright @ Harendra Jagari"
                 FontAttributes="Bold"
                 FontSize="14"
                 HorizontalOptions="Center"
-                TextColor="White"/>
+                Text="Copyright @ Harendra Jagari"
+                TextColor="White" />
 
         </Border>
     </Shell.FlyoutFooter>

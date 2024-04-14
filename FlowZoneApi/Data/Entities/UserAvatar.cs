@@ -13,6 +13,8 @@ namespace FlowZoneApi.Data.Entities
         public Guid AvatarId { get; set; }
         public Avatar Avatar { get; set; }
 
+        public DateTime PurchaseDate { get; set; }
+
         [Key] // Define a composite primary key using UserId and AvatarId
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)] // Ensure that the primary key is auto-generated
         public Guid UserAvatarId { get; set; }

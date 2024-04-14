@@ -1,41 +1,92 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="FlowZone.Views.ToDoView"
-             xmlns:vm="clr-namespace:FlowZone.ViewModels"
-             Title="ToDoView"
-             x:DataType="vm:ToDoViewModel">
-    
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Create" Command="{Binding AddToDoItemCommand}" />
-    </ContentPage.ToolbarItems>
-    <ScrollView>
-        <StackLayout Margin="10">
-            <Label Text="ToDos" FontSize="20" FontAttributes="Bold" Margin="0,10,0,5" />
-            <CollectionView ItemsSource="{Binding ToDoItems}"
-                            SelectionMode="None"
-                            VerticalOptions="FillAndExpand"
-                            Margin="0,0,0,10">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Padding="10"
-                              BackgroundColor="#e0e0e0"
-                              Margin="0,0,0,10">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <Label Grid.Row="0" Text="{Binding Title}" FontAttributes="Bold" />
-                            <Label Grid.Row="1" Text="{Binding Description}" />
-                            <Label Grid.Row="2" Text="{Binding DueDate}" />
-                        </Grid>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </StackLayout>
-    </ScrollView>
+<ContentPage
+    x:Class="FlowZone.Views.ToDoView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:dtos="clr-namespace:FlowZone.shared.Dtos;assembly=FlowZone.shared"
+    xmlns:vm="clr-namespace:FlowZone.ViewModels"
+    Title="ToDos"
+    x:DataType="vm:ToDoViewModel">
+
+    <Grid>
+        <RefreshView
+            Command="{Binding LoadAllToDosCommand}"
+            IsRefreshing="{Binding IsRefreshing}"
+            RefreshColor="DarkBlue">
+
+            <Grid RowDefinitions="Auto,*">
+                <Label
+                    Grid.Row="0"
+                    Padding="5"
+                    FontSize="12"
+                    HorizontalOptions="Center"
+                    Text="Pull to Refresh"
+                    TextColor="DarkBlue" />
+                <ScrollView Grid.Row="1" Padding="5">
+                    <CollectionView
+                        x:Name="ToDoCollectionView"
+                        ItemsSource="{Binding ToDos}"
+                        SelectedItem="{Binding SelectedToDoItem, Mode=TwoWay}"
+                        SelectionChanged="OnToDoSelected"
+                        SelectionMode="Single">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="dtos:ToDoDto">
+                                <VerticalStackLayout>
+                                    <Border
+                                        Margin="5"
+                                        BackgroundColor="Red"
+                                        StrokeShape="RoundRectangle 15"
+                                        StrokeThickness="0">
+                                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                                            <StackLayout Grid.Column="1">
+                                                <Label FontSize="20" Text="{Binding Title}" />
+                                                <Label FontSize="16" Text="{Binding Description}" />
+                                                <Label FontSize="16" Text="{Binding Created}" />
+                                                <Label FontSize="16" Text="{Binding DueDate}" />
+                                                <Label FontSize="16" Text="{Binding Priority}" />
+                                            </StackLayout>
+                                            <StackLayout Grid.Column="2">
+                                                <Button
+                                                    BackgroundColor="Red"
+                                                    Clicked="Button2_Clicked"
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ToDoViewModel}}, Path=DeleteToDo}"
+                                                    CommandParameter="{Binding ToDoId}"
+                                                    HeightRequest="50"
+                                                    HorizontalOptions="EndAndExpand"
+                                                    Text="Delete"
+                                                    TextColor="DarkBlue"
+                                                    WidthRequest="120" />
+
+                                                <Button
+                                                    BackgroundColor="Red"
+                                                    Clicked="Button1_Clicked"
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ToDoViewModel}}, Path=CompleteToDo}"
+                                                    CommandParameter="{Binding ToDoId}"
+                                                    HeightRequest="50"
+                                                    HorizontalOptions="EndAndExpand"
+                                                    Text="Complete"
+                                                    TextColor="DarkBlue"
+                                                    WidthRequest="120" />
+                                            </StackLayout>
+                                        </Grid>
+
+                                    </Border>
+
+                                    <!--<VerticalStackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnUpdateTapped" />
+                                    </VerticalStackLayout.GestureRecognizers>-->
+
+                                </VerticalStackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </ScrollView>
+
+            </Grid>
+        </RefreshView>
+        <ActivityIndicator
+            HorizontalOptions="Center"
+            IsRunning="{Binding IsBusy}"
+            VerticalOptions="Center"
+            Color="DarkBlue" />
+    </Grid>
 </ContentPage>

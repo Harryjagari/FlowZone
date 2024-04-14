@@ -30,6 +30,13 @@ namespace WebApplication1.Controllers
             if (response.IsSuccessStatusCode)
             {
                 var avatars = await response.Content.ReadFromJsonAsync<IEnumerable<AvatarDto>>();
+
+                // Update the image paths to use the new endpoint
+                foreach (var avatar in avatars)
+                {
+                    avatar.ImagePath = $"https://localhost:7026/api/Avatar/image/{avatar.ImagePath}";
+                }
+
                 return View(avatars);
             }
             else

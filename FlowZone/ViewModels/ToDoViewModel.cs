@@ -1,111 +1,266 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using Microsoft.Maui.Controls;
-using FlowZone.shared.Dtos; 
-using FlowZone.Helpers;
-using Newtonsoft.Json; 
-using System.Net.Http.Json;
+﻿using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using FlowZone.Services;
+using FlowZone.shared.Dtos;
+using FlowZone.Views;
 
 namespace FlowZone.ViewModels
 {
-    public class ToDoViewModel : BindableObject
+    public partial class ToDoViewModel : BaseViewModel
     {
-        private const string BaseUrl = "https://localhost:7026/api/ToDo";
-
-        private ObservableCollection<ToDoDto> _toDoItems;
-        public ObservableCollection<ToDoDto> ToDoItems
-        {
-            get => _toDoItems;
-            set
-            {
-                _toDoItems = value;
-                OnPropertyChanged(nameof(ToDoItems));
-            }
-        }
-
-        public ICommand LoadToDoItemsCommand { get; private set; }
-        public ICommand AddToDoItemCommand { get; private set; }
-        public ICommand UpdateToDoItemCommand { get; private set; }
-        public ICommand DeleteToDoItemCommand { get; private set; }
+        private readonly IToDosApi _toDosApi;
+        private readonly AuthService _authService;
 
         public ToDoViewModel()
         {
-            LoadToDoItemsCommand = new Command(async () => await LoadToDoItems());
-            AddToDoItemCommand = new Command<ToDoDto>(async (toDo) => await AddToDoItem(toDo));
-            UpdateToDoItemCommand = new Command<ToDoDto>(async (toDo) => await UpdateToDoItem(toDo));
-            DeleteToDoItemCommand = new Command<Guid>(async (id) => await DeleteToDoItem(id));
+            // Parameterless constructor
         }
 
-        private async Task LoadToDoItems()
+        public ToDoViewModel(IToDosApi toDosApi, AuthService authService)
         {
-            var response = await HttpClientHelper.GetAsync<List<ToDoDto>>(BaseUrl);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var toDoItems = await response.Content.ReadFromJsonAsync<List<ToDoDto>>();
-                ToDoItems = new ObservableCollection<ToDoDto>(toDoItems);
-            }
-            else
-            {
-                Console.WriteLine("Failed to fetch ToDo items: " + response.ReasonPhrase);
-            }
+            _toDosApi = toDosApi;
+            _authService = authService;
         }
 
-        private async Task AddToDoItem(ToDoDto toDo)
+        [ObservableProperty]
+        private IEnumerable<ToDoDto> _toDos = Enumerable.Empty<ToDoDto>();
+
+        [ObservableProperty]
+        private Guid _toDoId;
+
+        [ObservableProperty]
+        private bool _isRefreshing;
+
+        private bool _isInitialized;
+
+        private ObservableCollection<CreateToDoDto> _toDoItems;
+        public ObservableCollection<CreateToDoDto> ToDoItems
         {
-            var json = JsonConvert.SerializeObject(toDo);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            var response = await HttpClientHelper.PostAsync(BaseUrl, content);
-
-            if (!response.IsSuccessStatusCode)
-            {
-                Console.WriteLine("Failed to add ToDo item: " + response.ReasonPhrase);
-            }
-            else
-            {
-                await LoadToDoItems(); // Reload ToDo items after addition
-            }
+            get => _toDoItems;
+            set => SetProperty(ref _toDoItems, value);
         }
 
-        private async Task UpdateToDoItem(ToDoDto toDo)
+        private ToDoDto _selectedToDoItem;
+        public ToDoDto SelectedToDoItem
         {
-            var url = $"{BaseUrl}/{toDo.ToDoId}";
-            var json = JsonConvert.SerializeObject(toDo);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            var response = await HttpClientHelper.PutAsync(url, content);
-
-            if (!response.IsSuccessStatusCode)
-            {
-                Console.WriteLine("Failed to update ToDo item: " + response.ReasonPhrase);
-            }
-            else
-            {
-                await LoadToDoItems(); // Reload ToDo items after update
-            }
+            get => _selectedToDoItem;
+            set => SetProperty(ref _selectedToDoItem, value);
         }
 
-        private async Task DeleteToDoItem(Guid id)
+
+
+        [ObservableProperty]
+        private bool _isBusy;
+
+        [ObservableProperty, NotifyPropertyChangedFor(nameof(CanCreateToDo)), NotifyPropertyChangedFor(nameof(CanUpdateToDo))]
+        private string? _title;
+
+        [ObservableProperty, NotifyPropertyChangedFor(nameof(CanCreateToDo)), NotifyPropertyChangedFor(nameof(CanUpdateToDo))]
+        private string? _description;
+
+        [ObservableProperty, NotifyPropertyChangedFor(nameof(CanCreateToDo)), NotifyPropertyChangedFor(nameof(CanUpdateToDo))]
+        private DateTime _dueDate;
+
+        [ObservableProperty, NotifyPropertyChangedFor(nameof(CanCreateToDo)), NotifyPropertyChangedFor(nameof(CanUpdateToDo))]
+        private string? _priority;
+
+        public bool CanCreateToDo => !string.IsNullOrEmpty(Title)
+                        && !string.IsNullOrEmpty(Description)
+                        && DueDate != default
+                        && !string.IsNullOrEmpty(Priority);
+
+
+        public bool CanUpdateToDo => CanCreateToDo;
+
+
+        public async Task InitializeAsync()
         {
-            var url = $"{BaseUrl}/{id}";
-            var response = await HttpClientHelper.DeleteAsync(url);
+            if (_isInitialized)
+                return;
+            _isInitialized = true;
+            await LoadAllToDos(true);
 
-            if (!response.IsSuccessStatusCode)
+            // Check if a ToDo item is selected for editing
+            if (_selectedToDoItem != null)
             {
-                Console.WriteLine("Failed to delete ToDo item: " + response.ReasonPhrase);
-            }
-            else
-            {
-                var itemToRemove = ToDoItems.FirstOrDefault(t => t.ToDoId == id);
-                if (itemToRemove != null)
-                    ToDoItems.Remove(itemToRemove);
-
+                // Populate the UI with the details of the selected ToDo item
+                Title = _selectedToDoItem.Title;
+                Description = _selectedToDoItem.Description;
+                DueDate = _selectedToDoItem.DueDate;
+                Priority = _selectedToDoItem.Priority;
             }
         }
+
+        //public async Task InitializeAsync()
+        //{
+        //    if (_isInitialized)
+        //        return;
+        //    _isInitialized = true;
+        //    await LoadAllToDos(true);
+
+        //}
+        private async Task LoadAllToDos(bool initialLoad)
+        {
+            if (initialLoad)
+                IsBusy = true;
+            else
+                IsRefreshing = true;
+            IsBusy = true;
+            try
+            {
+                await Task.Delay(100);
+                var ToDosResponse = await _toDosApi.GetAllToDoItems();
+                if (ToDosResponse.IsSuccess)
+                {
+                    ToDos = new ObservableCollection<ToDoDto>(ToDosResponse.Data);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                await ShowAlertAsync(ex.Message);
+            }
+            finally
+            {
+                IsBusy = IsRefreshing = false;
+            }
+        }
+
+        [RelayCommand]
+        private async Task LoadAllToDos() => await LoadAllToDos(false);
+
+        [RelayCommand]
+        public async Task CreateToDoItemAsync()
+        {
+            IsBusy = true;
+            try
+            {
+                var CreateToDoDto = new CreateToDoDto(Title, Description, DueDate, Priority);
+
+                var result = await _toDosApi.CreateToDoItem(CreateToDoDto);
+
+                if (result.IsSuccess)
+                {
+                    await GoToAsync($"//{nameof(ToDoView)}", animate: true);
+
+                }
+                else
+                {
+                    await ShowErrorAlertAsync(result.ErrorMessage ?? "Unknown Error in Creating up");
+                }
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        [RelayCommand]
+        public async Task UpdateToDoItemAsync(Guid ToDoId)
+        {
+            IsBusy = true;
+            try
+            {
+                // Ensure a ToDo item is selected for updating
+
+                // Create a new CreateToDoDto object from the properties of the selected ToDo item
+                var updateDto = new CreateToDoDto(Title, Description, DueDate, Priority);
+
+                // Call the API to update the ToDo item
+                var result = await _toDosApi.UpdateToDoItem(ToDoId, updateDto);
+
+                if (result.IsSuccess)
+                {
+                    // Optionally, navigate back to the ToDo page or perform other actions
+                    await GoToAsync($"//{nameof(ToDo)}", animate: true);
+                }
+                else
+                {
+                    await ShowErrorAlertAsync(result.ErrorMessage ?? "Unknown Error in Updating");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+
+
+        [RelayCommand]
+        public async Task CompleteToDoAsync(Guid ToDoId)
+        {
+            if (!_authService.IsLoggedIn)
+            {
+                await ShowAlertAsync("Not lOgged In");
+            }
+            IsBusy = true;
+            try
+            {
+                var CompleteToDoResponse = await _toDosApi.CompleteToDo(ToDoId);
+                if (CompleteToDoResponse.IsSuccess)
+                {
+                    // Optionally, you can reload avatars or perform any other action after a successful purchase
+                    await ShowAlertAsync("Successfully completed ToDo. ");
+
+                }
+                else
+                {
+                    await ShowAlertAsync("Failed to complete ToDo. " + CompleteToDoResponse.ErrorMessage);
+                }
+            }
+            catch (Exception ex)
+            {
+                await ShowAlertAsync("An error occurred while complteing ToDo: " + ex.Message);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+
+        [RelayCommand]
+        public async Task DeleteToDoAsync(Guid ToDoId)
+        {
+            if (!_authService.IsLoggedIn)
+            {
+                await ShowAlertAsync("Not lOgged In");
+            }
+            IsBusy = true;
+            try
+            {
+                var DeleteToDoResponse = await _toDosApi.DeleteToDoItem(ToDoId);
+                if (DeleteToDoResponse.IsSuccess)
+                {
+                    // Optionally, you can reload avatars or perform any other action after a successful purchase
+                    await ShowAlertAsync("Successfully deleted ToDo. ");
+
+                }
+                else
+                {
+                    await ShowAlertAsync("Failed to delete ToDo. " + DeleteToDoResponse.ErrorMessage);
+                }
+            }
+            catch (Exception ex)
+            {
+                await ShowAlertAsync("An error occurred while deleting ToDo: " + ex.Message);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
     }
 }

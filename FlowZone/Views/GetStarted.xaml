@@ -1,28 +1,57 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="FlowZone.Views.GetStarted"
-             Title="GetStarted"
-             NavigationPage.HasNavigationBar="False">
-             
-    
+<ContentPage
+    x:Class="FlowZone.Views.GetStarted"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="GetStarted"
+    NavigationPage.HasNavigationBar="False">
+
+
     <ContentPage.Content>
-        <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Padding="20" Spacing="10">
-            
-            <!--Image-->
-            <Image Source="logo.png" Aspect="AspectFill" HeightRequest="130" WidthRequest="130" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
+        <StackLayout
+            Padding="20"
+            HorizontalOptions="FillAndExpand"
+            Spacing="10"
+            VerticalOptions="FillAndExpand">
 
-            <!-- Image -->
-            <Image Source="resource.png" Aspect="AspectFit" HeightRequest="200" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
+            <!--  Image  -->
+            <Image
+                Aspect="AspectFill"
+                HeightRequest="130"
+                HorizontalOptions="CenterAndExpand"
+                Source="logo.png"
+                VerticalOptions="CenterAndExpand"
+                WidthRequest="130" />
 
-            <!-- Slogan -->
-            <Label Text="FlowZone" FontSize="20" HorizontalOptions="Center"/>
+            <!--  Image  -->
+            <Image
+                Aspect="AspectFit"
+                HeightRequest="200"
+                HorizontalOptions="CenterAndExpand"
+                Source="resource.png"
+                VerticalOptions="CenterAndExpand" />
 
-            <!-- Description -->
-            <Label Text="Unleash Your Productivity Potential !" FontSize="16" HorizontalOptions="CenterAndExpand"/>
+            <!--  Slogan  -->
+            <Label
+                FontSize="20"
+                HorizontalOptions="Center"
+                Text="FlowZone" />
 
-            <!-- Skip Button -->
-            <Button Text="Skip" Clicked="OnSkipClicked" HorizontalOptions="CenterAndExpand" VerticalOptions="End" Margin="0,120,0,50" HeightRequest="50" WidthRequest="100"/>
+            <!--  Description  -->
+            <Label
+                FontSize="16"
+                HorizontalOptions="CenterAndExpand"
+                Text="Unleash Your Productivity Potential !" />
+
+            <!--  Skip Button  -->
+            <Button
+                Margin="0,120,0,50"
+                Clicked="OnSkipClicked"
+                HeightRequest="50"
+                HorizontalOptions="CenterAndExpand"
+                Text="Skip"
+                VerticalOptions="End"
+                WidthRequest="100" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -4,6 +4,12 @@ using Microsoft.Maui.Platform;
 using Refit;
 using FlowZone.Services;
 using FlowZone.ViewModels;
+using FlowZone.shared;
+using System.Net.Http;
+using CommunityToolkit.Maui;
+
+
+
 
 
 
@@ -30,7 +36,8 @@ namespace FlowZone
 			var builder = MauiApp.CreateBuilder();
 			builder
 				.UseMauiApp<App>()
-				.ConfigureFonts(fonts =>
+                .UseMauiCommunityToolkit()
+                .ConfigureFonts(fonts =>
 				{
 					fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 					fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
@@ -45,47 +52,94 @@ namespace FlowZone
 
 			builder.Services.AddSingleton<AuthService>();
 
+			builder.Services.AddSingleton<CommonService>();
+
 			builder.Services.AddTransient<GetStarted>();
 
 			builder.Services.AddSingleton<HomeViewModel>()
 				.AddSingleton<Home>();
-			ConfigureRefit(builder.Services);
+            builder.Services.AddSingleton<AvatarViewModel>()
+				.AddTransient<Avatars>();
+            builder.Services.AddSingleton<ChallengeViewModel>()
+                .AddTransient<Challenges>();
+            builder.Services.AddSingleton<ToDoViewModel>()
+                .AddTransient<ToDo>()
+                .AddTransient<ToDoView>()
+                .AddTransient<UpdateToDo>();
+            builder.Services.AddSingleton<UserChallengesViewModel>()
+                .AddTransient<MyChallenges>();
+            builder.Services.AddSingleton<ProfileViewModel>()
+                .AddTransient<Profile>()
+                .AddTransient<ResetPassword>();
+
+            builder.Services.AddSingleton<UserViewModel>()
+                .AddTransient<ForgetPassword>()
+                .AddTransient<ResetPasswordWithOTP>();
+
+            ConfigureRefit(builder.Services);
+
 
 			return builder.Build();
 		}
 
-		private static void ConfigureRefit(IServiceCollection services)
+		static void ConfigureRefit(IServiceCollection services)
 		{
-			var refitSettings = new RefitSettings
+			services.AddRefitClient<IAuthApi>()
+                .ConfigureHttpClient(SetHttpClient);
+
+            services.AddRefitClient<IToDosApi>(sp =>
+            {
+				var commonService = sp.GetRequiredService<CommonService>();
+                return new RefitSettings()
+                {
+                    AuthorizationHeaderValueGetter = (_, __) => Task.FromResult(commonService.Token ?? string.Empty)
+                };
+            })
+				.ConfigureHttpClient(SetHttpClient);
+
+            services.AddRefitClient<IAvatarApi>(sp =>
 			{
-				HttpMessageHandlerFactory = () =>
+                var commonService = sp.GetRequiredService<CommonService>();
+                return new RefitSettings()
 				{
-#if ANDROID
-					return new AndroidMessageHandler
-					{
-						ServerCertificateCustomValidationCallback = (httpRequestMessage, certificate, chain, sslPolicyErrors) =>
-						{
-							return certificate?.Issuer == "CN=localhost" || sslPolicyErrors == SslPolicyErrors.None;							
-						}
-					};
-#endif
-					return null;
-				}
-			};
+                    AuthorizationHeaderValueGetter = (_, __) => Task.FromResult(commonService.Token ?? string.Empty)
+                };
+			})
+                .ConfigureHttpClient(SetHttpClient);
 
-			services.AddRefitClient<IAuthApi>(refitSettings)
-				.ConfigureHttpClient(SetHttpClient);
+            services.AddRefitClient<IChallengeApi>(sp =>
+            {
+                var commonService = sp.GetRequiredService<CommonService>();
+                return new RefitSettings()
+                {
+                    AuthorizationHeaderValueGetter = (_, __) => Task.FromResult(commonService.Token ?? string.Empty)
+                };
+            })
+                .ConfigureHttpClient(SetHttpClient);
 
-			services.AddRefitClient<IToDosApi>(refitSettings)
-				.ConfigureHttpClient(SetHttpClient);
+            services.AddRefitClient<IPasswordApi>(sp =>
+            {
+                var commonService = sp.GetRequiredService<CommonService>();
+                return new RefitSettings()
+                {
+                    AuthorizationHeaderValueGetter = (_, __) => Task.FromResult(commonService.Token ?? string.Empty)
+                };
+            })
+                .ConfigureHttpClient(SetHttpClient);
 
-            static void SetHttpClient(HttpClient httpClient)
-			{
-				var baseUrl = DeviceInfo.Platform == DevicePlatform.Android
-						? "https://10.0.2.2:7026"
-						: "https://localhost:7026";
-				httpClient.BaseAddress = new Uri(baseUrl);
-			}
-		}
+            services.AddRefitClient<IProfileApi>(sp =>
+            {
+                var commonService = sp.GetRequiredService<CommonService>();
+                return new RefitSettings()
+                {
+                    AuthorizationHeaderValueGetter = (_, __) => Task.FromResult(commonService.Token ?? string.Empty)
+                };
+            })
+                .ConfigureHttpClient(SetHttpClient);
+
+            static void SetHttpClient(HttpClient httpClient) =>
+				httpClient.BaseAddress = new Uri(AppConstants.BaseApiUrl);
+
+        }
 	}
 }

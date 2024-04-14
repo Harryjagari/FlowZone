@@ -9,6 +9,6 @@ namespace FlowZone.shared.Dtos
     public class AvatarUpdateRequestDto
     {
         public string avatarName { get; set; } 
-        public double avatarPrice { get; set; }
+        public int avatarPrice { get; set; }
     }
 }

@@ -15,21 +15,25 @@
         </div>
     </div>
 
+    <div class="row justify-content-start">
     @foreach (var avatar in Model)
     {
-        <div class="col-4">
+        <div class="col-md-4 mb-4">
             <div class="card" style="width: 18rem;">
-                <img class="card-img-top" src="@avatar.ImagePath" alt="Avatar Image">
+                    <img class="card-img-top" src="@avatar.ImagePath" alt="Avatar Image" style="height: 200px; object-fit: cover;">
+
                 <div class="card-body">
                     <h5 class="card-title">@avatar.avatarName</h5>
                     <p class="card-text">Price: @avatar.avatarPrice</p>
-                    <button type="button" class="btn btn-primary update-avatar" data-toggle="modal" data-target="#avatarUpdateModal-@avatar.AvatarId">
-                        Update
-                    </button>
-                    <form action="@Url.Action("Delete", "Avatar", new { id = avatar.AvatarId })" method="post" onsubmit="return confirm('Are you sure you want to delete this avatar?');">
-                        <input type="hidden" name="_method" value="DELETE" />
-                        <button type="submit" class="btn btn-primary">Delete</button>
-                    </form>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary update-avatar" data-toggle="modal" data-target="#avatarUpdateModal-@avatar.AvatarId">
+                            Update
+                        </button>
+                        <form action="@Url.Action("Delete", "Avatar", new { id = avatar.AvatarId })" method="post" onsubmit="return confirm('Are you sure you want to delete this avatar?');" style="margin-left: 8px;">
+                            <input type="hidden" name="_method" value="DELETE" />
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -65,7 +69,7 @@
             </div>
         </div>
     }
-
+    </div>
 
     <!-- Modal -->
     <div class="modal fade" id="avatarModal" tabindex="-1" role="dialog" aria-labelledby="avatarModalLabel" aria-hidden="true">

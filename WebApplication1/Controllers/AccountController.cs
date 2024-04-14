@@ -1,28 +1,36 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FlowZone.shared.Dtos;
+using Microsoft.AspNetCore.Mvc;
 
 public class AccountController : Controller
 {
+
+    private readonly IHttpClientFactory _clientFactory;
+
+    public AccountController(IHttpClientFactory clientFactory)
+    {
+        _clientFactory = clientFactory;
+    }
     // GET: Account/Login
     public ActionResult Login()
     {
         return View();
     }
 
+
     [HttpPost]
-    [ValidateAntiForgeryToken]
-    public ActionResult Login(string username, string password)
+    public async Task<IActionResult> Login([FromForm] AdminLoginDto adminLoginDto)
     {
-        // Validate username and password
-        if (username == "admin" && password == "password")
+        var client = _clientFactory.CreateClient();
+        var response = await client.PostAsJsonAsync($"https://localhost:7026/api/Admin/Login", adminLoginDto);
+
+        if (response.IsSuccessStatusCode)
         {
-            // Redirect to dashboard upon successful login
             return RedirectToAction("index", "Home");
         }
         else
         {
-            // Display an error message for invalid credentials
-            ModelState.AddModelError("", "Invalid username or password");
-            return View();
+            // Handle error response
+            return View("Error");
         }
     }
 }

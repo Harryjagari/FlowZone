@@ -22,10 +22,14 @@ namespace FlowZoneApi.Data.Entities
 		[Required, MaxLength(100)]
 		public string Priority { get; set; }
 
+        public bool IsComplete { get; set; }
+
         // Foreign key
         public Guid UserId { get; set; }
         // Navigation property
         public User User { get; set; }
+
+        public List<UserToDo> UserTodos { get; set; }
 
     }
 }

@@ -29,7 +29,6 @@ namespace WebApplication1.Controllers
             }
             else
             {
-                // Handle error response
                 return View("Error");
             }
         }
@@ -46,7 +45,6 @@ namespace WebApplication1.Controllers
             }
             else
             {
-                // Handle error response
                 return View("Error");
             }
         }
@@ -64,7 +62,6 @@ namespace WebApplication1.Controllers
             }
             else
             {
-                // Handle error response
                 return View("Error");
             }
         }
@@ -80,7 +77,6 @@ namespace WebApplication1.Controllers
             }
             else
             {
-                // Handle error response
                 return View("Error");
             }
         }

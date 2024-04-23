@@ -31,7 +31,6 @@ namespace WebApplication1.Controllers
             {
                 var avatars = await response.Content.ReadFromJsonAsync<IEnumerable<AvatarDto>>();
 
-                // Update the image paths to use the new endpoint
                 foreach (var avatar in avatars)
                 {
                     avatar.ImagePath = $"https://localhost:7026/api/Avatar/image/{avatar.ImagePath}";
@@ -41,7 +40,6 @@ namespace WebApplication1.Controllers
             }
             else
             {
-                // Handle error response
                 return View("Error");
             }
         }
@@ -59,7 +57,6 @@ namespace WebApplication1.Controllers
             }
             else
             {
-                // Handle error response
                 return View("Error");
             }
         }
@@ -76,11 +73,9 @@ namespace WebApplication1.Controllers
                 {
                     using (var formData = new MultipartFormDataContent())
                     {
-                        // Add avatar data as form fields
                         formData.Add(new StringContent(avatar.avatarName), "avatarName");
                         formData.Add(new StringContent(avatar.avatarPrice.ToString()), "avatarPrice");
 
-                        // Add image file
                         using (var imageStream = avatar.avatarImage.OpenReadStream())
                         {
                             var imageContent = new StreamContent(imageStream);
@@ -91,17 +86,14 @@ namespace WebApplication1.Controllers
                             };
                             formData.Add(imageContent);
 
-                            // Send the request to the API endpoint
                             var response = await client.PostAsync("https://localhost:7026/api/Avatar", formData);
 
-                            // Check response status and handle accordingly
                             if (response.IsSuccessStatusCode)
                             {
                                 return RedirectToAction(nameof(Index));
                             }
                             else
                             {
-                                // Get the error message from the response content
                                 var errorMessage = await response.Content.ReadAsStringAsync();
                                 Console.WriteLine($"Failed to create avatar. Error: {errorMessage}");
                                 return BadRequest($"Failed to create avatar. Error: {errorMessage}");
@@ -131,7 +123,6 @@ namespace WebApplication1.Controllers
             }
             else
             {
-                // Handle error response
                 return View("Error");
             }
         }
@@ -147,7 +138,6 @@ namespace WebApplication1.Controllers
             }
             else
             {
-                // Handle error response
                 return View("Error");
             }
         }

@@ -27,7 +27,7 @@
                             <DataTemplate x:DataType="dtos:UserChallengeDto">
                                 <VerticalStackLayout>
                                     <Border
-                                        BackgroundColor="Red"
+                                        BackgroundColor="SkyBlue"
                                         StrokeShape="RoundRectangle 15"
                                         StrokeThickness="0">
                                         <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
@@ -35,19 +35,22 @@
                                                 <Label FontSize="20" Text="{Binding Title}" />
                                                 <Label FontSize="16" Text="{Binding Description}" />
                                                 <Label FontSize="16" Text="{Binding Points}" />
-                                                <Label FontSize="16" Text="{Binding EndDate}" />
+                                                <StackLayout Orientation="Horizontal">
+                                                    <Label Text="End: " TextColor="White" />
+                                                    <Label FontSize="16" Text="{Binding EndDate, StringFormat='{0:d}'}" />
+                                                </StackLayout>
                                             </StackLayout>
 
                                             <Button
                                                 Grid.Column="2"
-                                                BackgroundColor="Red"
+                                                BackgroundColor="Green"
                                                 Clicked="Button_Clicked"
                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type vm:UserChallengesViewModel}}, Path=CompleteChallenge}"
                                                 CommandParameter="{Binding UserChallengeId}"
                                                 HeightRequest="50"
                                                 HorizontalOptions="EndAndExpand"
                                                 Text="Complete"
-                                                TextColor="DarkBlue"
+                                                TextColor="White"
                                                 WidthRequest="120" />
 
 

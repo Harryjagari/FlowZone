@@ -61,6 +61,19 @@
                                         HorizontalOptions="Center"
                                         Text="{Binding Address}"
                                         TextColor="DarkBlue" />
+
+                                    <StackLayout HorizontalOptions="Center" Orientation="Horizontal">
+                                        <Label
+                                            FontSize="16"
+                                            HorizontalOptions="Center"
+                                            Text="My Points: "
+                                            TextColor="DarkBlue" />
+                                        <Label
+                                            FontSize="16"
+                                            HorizontalOptions="Center"
+                                            Text="{Binding EarnedPoints}"
+                                            TextColor="DarkBlue" />
+                                    </StackLayout>
                                     <Label
                                         Margin="30"
                                         FontAttributes="Bold"
@@ -84,7 +97,7 @@
 
         <Label
             Grid.Row="1"
-            Margin="0,10,0,5"
+            Margin="0,10,0,10"
             FontSize="Title"
             HorizontalOptions="Center"
             Text="Purchased Avatars" />
@@ -110,7 +123,7 @@
                                 <DataTemplate x:DataType="dtos:UserAvatarDto">
                                     <Border StrokeShape="RoundRectangle 50,50,0,0" StrokeThickness="0">
                                         <VerticalStackLayout Spacing="5">
-                                            <Grid>
+                                            <Grid Margin="5">
                                                 <Image
                                                     Aspect="AspectFill"
                                                     HeightRequest="150"

@@ -109,13 +109,6 @@ public partial class Pomodoro : ContentPage, INotifyPropertyChanged
 		StopCommand.ChangeCanExecute();
 	}
 
-	private async void OnConfigureClicked(object sender, EventArgs e)
-	{
-		// Add your configuration logic here
-		// For example, use a dialog or navigate to a settings page
-		// For simplicity, let's just show an alert
-		await DisplayAlert("Configure", "Configure clicked!", "OK");
-	}
 
 	public event PropertyChangedEventHandler PropertyChanged;
 

@@ -49,17 +49,18 @@ namespace FlowZone.Views
             }
         }
 
+
         private async void OnToDoSelected(object sender, SelectionChangedEventArgs e)
         {
             if (e.CurrentSelection != null && e.CurrentSelection.Count > 0)
             {
-                // Get the selected ToDo item
                 var selectedToDoItem = (ToDoDto)e.CurrentSelection.FirstOrDefault();
 
-                // Navigate to the UpdateToDo page and pass the selected ToDoDto item
-                await Navigation.PushAsync(new UpdateToDo(selectedToDoItem));
+                _toDoViewModel.SelectedToDoItem = selectedToDoItem;
 
-                // Clear the selection to prevent multiple taps triggering this event
+                var updateToDoPage = new UpdateToDo(_toDoViewModel,selectedToDoItem);
+                await Navigation.PushAsync(updateToDoPage);
+
                 ((CollectionView)sender).SelectedItem = null;
             }
         }

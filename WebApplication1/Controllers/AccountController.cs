@@ -1,5 +1,6 @@
 ﻿using FlowZone.shared.Dtos;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 public class AccountController : Controller
 {
@@ -10,7 +11,7 @@ public class AccountController : Controller
     {
         _clientFactory = clientFactory;
     }
-    // GET: Account/Login
+
     public ActionResult Login()
     {
         return View();
@@ -20,6 +21,12 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> Login([FromForm] AdminLoginDto adminLoginDto)
     {
+        if (string.IsNullOrEmpty(adminLoginDto.Username) || string.IsNullOrEmpty(adminLoginDto.Password))
+        {
+            ModelState.AddModelError(string.Empty, "Username and password are required.");
+            return BadRequest(ModelState);
+        }
+
         var client = _clientFactory.CreateClient();
         var response = await client.PostAsJsonAsync($"https://localhost:7026/api/Admin/Login", adminLoginDto);
 
@@ -27,10 +34,22 @@ public class AccountController : Controller
         {
             return RedirectToAction("index", "Home");
         }
+        else if (response.StatusCode == HttpStatusCode.BadRequest)
+        {
+            ModelState.AddModelError(string.Empty, "Invalid username or password.");
+            return BadRequest(ModelState);
+        }
         else
         {
-            // Handle error response
+
             return View("Error");
         }
     }
+
+    public IActionResult Logout()
+    {
+
+        return RedirectToAction("Login");
+    }
+
 }

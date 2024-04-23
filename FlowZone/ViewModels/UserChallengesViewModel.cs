@@ -75,7 +75,6 @@ namespace FlowZone.ViewModels
                 var CompleteChallengeResponse = await _challengeApi.CompleteChallenge(userChallengeId);
                 if (CompleteChallengeResponse.IsSuccess)
                 {
-                    // Optionally, you can reload avatars or perform any other action after a successful purchase
                     await ShowAlertAsync("Successfully completed challenge. ");
 
                 }

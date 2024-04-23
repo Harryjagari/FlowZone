@@ -23,7 +23,6 @@ namespace FlowZoneApi.Controllers
             _context = context;
         }
 
-        // GET: api/Challenge
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ChallengeDto>>> GetAllChallenges()
         {
@@ -40,7 +39,7 @@ namespace FlowZoneApi.Controllers
             return Ok(challenges);
         }
 
-        // POST: api/Challenge
+
         [HttpPost]
         public async Task<ActionResult<ChallengeDto>> AddChallenge(ChallengeDto challengeDto)
         {
@@ -56,11 +55,11 @@ namespace FlowZoneApi.Controllers
             _context.Challenges.Add(challenge);
             await _context.SaveChangesAsync();
 
-            // Return the saved ChallengeDto along with a 201 Created status
+
             return CreatedAtAction(nameof(GetAllChallenges), new { id = challenge.ChallengeId }, challengeDto);
         }
 
-        // PUT: api/Challenge/{id}
+
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateChallenge(Guid id, ChallengeDto challengeDto)
         {
@@ -71,7 +70,6 @@ namespace FlowZoneApi.Controllers
                 return NotFound();
             }
 
-            // Update challenge properties
             challenge.Name = challengeDto.Title;
             challenge.Description = challengeDto.Description;
             challenge.Points = challengeDto.Points;
@@ -100,7 +98,7 @@ namespace FlowZoneApi.Controllers
         }
 
 
-        // GET: api/Challenge/{id}
+
         [HttpGet("{id}")]
         public async Task<ActionResult<ChallengeDto>> GetChallengeById(Guid id)
         {
@@ -125,7 +123,6 @@ namespace FlowZoneApi.Controllers
         }
 
 
-        // DELETE: api/Challenge/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteChallenge(Guid id)
         {

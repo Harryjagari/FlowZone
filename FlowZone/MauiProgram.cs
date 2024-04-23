@@ -76,7 +76,9 @@ namespace FlowZone
                 .AddTransient<ForgetPassword>()
                 .AddTransient<ResetPasswordWithOTP>();
 
+
             ConfigureRefit(builder.Services);
+
 
 
 			return builder.Build();

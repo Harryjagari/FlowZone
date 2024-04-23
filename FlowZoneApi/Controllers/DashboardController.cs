@@ -19,7 +19,6 @@ namespace FlowZoneApi.Controllers
             _context = context;
         }
 
-        // GET: api/dashboard/user-count
         [HttpGet("user-count")]
         public async Task<ActionResult<int>> GetUserCount()
         {
@@ -27,7 +26,7 @@ namespace FlowZoneApi.Controllers
             return Ok(userCount);
         }
 
-        // GET: api/dashboard/avatar-count
+
         [HttpGet("avatar-count")]
         public async Task<ActionResult<int>> GetAvatarCount()
         {
@@ -35,7 +34,6 @@ namespace FlowZoneApi.Controllers
             return Ok(avatarCount);
         }
 
-        // GET: api/dashboard/challenge-count
         [HttpGet("challenge-count")]
         public async Task<ActionResult<int>> GetChallengeCount()
         {
@@ -43,7 +41,6 @@ namespace FlowZoneApi.Controllers
             return Ok(challengeCount);
         }
 
-        // GET: api/dashboard/challenges-joined-by-user/{year}/{month}
         [HttpGet("challenges-joined-by-user/{year}/{month}")]
         public async Task<ActionResult<int[]>> GetChallengesJoinedByUser(int year, int month)
         {
@@ -59,7 +56,6 @@ namespace FlowZoneApi.Controllers
             return Ok(data);
         }
 
-        // GET: api/dashboard/avatars-purchased-in-month/{year}/{month}
         [HttpGet("avatars-purchased-in-month/{year}/{month}")]
         public async Task<ActionResult<int>> GetAvatarsPurchasedInMonth(int year, int month)
         {

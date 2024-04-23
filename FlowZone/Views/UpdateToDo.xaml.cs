@@ -1,5 +1,6 @@
 using FlowZone.shared.Dtos;
 using FlowZone.ViewModels;
+using Microsoft.VisualBasic;
 
 namespace FlowZone.Views
 {
@@ -9,21 +10,18 @@ namespace FlowZone.Views
 
         private readonly ToDoDto _selectedToDoItem;
 
-        public UpdateToDo(ToDoDto selectedToDoItem)
+        public UpdateToDo(ToDoViewModel toDoViewModel,ToDoDto selectedToDoItem)
         {
             InitializeComponent();
 
-            // Create a new instance of ToDoViewModel and pass selectedToDoItem
-            _toDoViewModel = new ToDoViewModel();
+            _toDoViewModel = toDoViewModel;
             _selectedToDoItem = selectedToDoItem;
 
-            // Set the properties of the ToDoViewModel based on selectedToDoItem
             _toDoViewModel.Title = selectedToDoItem.Title;
             _toDoViewModel.Description = selectedToDoItem.Description;
             _toDoViewModel.DueDate = selectedToDoItem.DueDate;
             _toDoViewModel.Priority = selectedToDoItem.Priority;
 
-            // Set the BindingContext to the ToDoViewModel
             BindingContext = _toDoViewModel;
         }
 
@@ -31,39 +29,27 @@ namespace FlowZone.Views
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            // You might want to initialize or load data here based on the scenario
         }
 
-        //private async void OnUpdateTapped(object sender, EventArgs e)
-        //{
-
-        //    // Perform the update logic using the ViewModel
-        //    if (BindingContext is ToDoViewModel viewModel)
-        //    {
-        //        await viewModel.UpdateToDoItemAsync();
-        //    }
-        //    else
-        //    {
-        //        await DisplayAlert("Error", "Invalid binding context", "OK");
-        //    }
-        //}
         private async void OnUpdateTapped(object sender, EventArgs e)
         {
-            // Ensure that the BindingContext is a ToDoViewModel instance
             if (BindingContext is ToDoViewModel viewModel)
             {
-                // Check if the BindingContext is ToDoViewModel
-                if (viewModel.SelectedToDoItem != null)
+                try
                 {
-                    // Get the ID of the selected ToDo item
-                    Guid toDoId = viewModel.SelectedToDoItem.ToDoId;
+                    if (string.IsNullOrWhiteSpace(Title))
+                    {
+                        await DisplayAlert("Error","Title is required","Ok");
+                        return;
+                    }
 
-                    // Call the UpdateToDoItemAsync method in the ViewModel with the ToDo ID
-                    await viewModel.UpdateToDoItemAsync(toDoId);
+                    viewModel.SelectedToDoItem = _selectedToDoItem;
+
+                    await viewModel.UpdateToDoItemAsync(_selectedToDoItem.ToDoId);
                 }
-                else
+                catch (Exception ex)
                 {
-                    await DisplayAlert("Error", "No ToDo item selected", "OK");
+                    await DisplayAlert("Error", $"Failed to update ToDo item: {ex.Message}", "OK");
                 }
             }
             else
@@ -71,6 +57,8 @@ namespace FlowZone.Views
                 await DisplayAlert("Error", "Invalid binding context", "OK");
             }
         }
+
+
 
 
     }

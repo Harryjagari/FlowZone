@@ -129,7 +129,7 @@ namespace FlowZone.ViewModels
                 var SetProfileResponse = await _profileApi.SetProfilePicture(AvatarId);
                 if (SetProfileResponse.IsSuccess)
                 {
-                    // Optionally, you can reload avatars or perform any other action after a successful purchase
+                   
                     await ShowAlertAsync("Successfully set profile. ");
 
                 }
@@ -153,8 +153,24 @@ namespace FlowZone.ViewModels
         {
             if (!_authService.IsLoggedIn)
             {
-                await ShowAlertAsync("Not lOgged In");
+                await ShowAlertAsync("Not logged in");
+                return;
             }
+
+            
+            if (string.IsNullOrWhiteSpace(Email))
+            {
+                await ShowAlertAsync("Email is required");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(NewPassword))
+            {
+                await ShowAlertAsync("New password is required");
+                return;
+            }
+
+
             IsBusy = true;
             try
             {
@@ -163,27 +179,27 @@ namespace FlowZone.ViewModels
                     Email = Email,
                     NewPassword = NewPassword
                 };
+
                 var ResetResponse = await _passwordApi.ResetPasswordAsync(resetPasswordDto);
                 if (ResetResponse.IsSuccess)
                 {
-                    // Optionally, you can reload avatars or perform any other action after a successful purchase
-                    await ShowAlertAsync("Successfully set profile. ");
-
+                    await ShowAlertAsync("Password reset successfully.");
                 }
                 else
                 {
-                    await ShowAlertAsync("Failed to set profile. " + ResetResponse.ErrorMessage);
+                    await ShowAlertAsync("Failed to reset password. " + ResetResponse.ErrorMessage);
                 }
             }
             catch (Exception ex)
             {
-                await ShowAlertAsync("An error occurred while setting profile: " + ex.Message);
+                await ShowAlertAsync("An error occurred while resetting password: " + ex.Message);
             }
             finally
             {
                 IsBusy = false;
             }
         }
+
 
     }
 }

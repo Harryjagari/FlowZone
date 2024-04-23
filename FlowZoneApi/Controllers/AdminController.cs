@@ -68,15 +68,26 @@ namespace FlowZoneApi.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] AdminLoginDto model)
         {
+            if (string.IsNullOrEmpty(model.Username) && string.IsNullOrEmpty(model.Password))
+            {
+                return BadRequest(new { message = "Username and password are required" });
+            }
+            else if (string.IsNullOrEmpty(model.Username))
+            {
+                return BadRequest(new { message = "Username is required" });
+            }
+            else if (string.IsNullOrEmpty(model.Password))
+            {
+                return BadRequest(new { message = "Password is required" });
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            // Find admin by username
             var admin = _context.Admins.FirstOrDefault(a => a.AdminUserName == model.Username);
 
-            // Check if admin exists and password matches
             if (admin == null || !VerifyPassword(model.Password, admin.AdminPassword))
             {
                 return BadRequest(new { message = "Invalid username or password" });
@@ -85,21 +96,19 @@ namespace FlowZoneApi.Controllers
             return Ok(new { message = "Login successful" });
         }
 
+
         private bool VerifyPassword(string inputPassword, string hashedPassword)
         {
             using (var sha256 = SHA256.Create())
             {
-                // Compute hash from input password
                 byte[] hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(inputPassword));
 
-                // Convert byte array to a hexadecimal string
                 StringBuilder builder = new StringBuilder();
                 for (int i = 0; i < hashedBytes.Length; i++)
                 {
                     builder.Append(hashedBytes[i].ToString("x2"));
                 }
 
-                // Compare the hashed input password with the stored hashed password
                 return builder.ToString() == hashedPassword;
             }
         }
@@ -107,15 +116,12 @@ namespace FlowZoneApi.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteAdmin(Guid id)
         {
-            // Find the admin by id
             var admin = _context.Admins.Find(id);
 
             if (admin == null)
             {
                 return NotFound(new { message = "Admin not found" });
             }
-
-            // Remove the admin from the context
             _context.Admins.Remove(admin);
             _context.SaveChanges();
 

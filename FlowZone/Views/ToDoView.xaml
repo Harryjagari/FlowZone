@@ -14,13 +14,6 @@
             RefreshColor="DarkBlue">
 
             <Grid RowDefinitions="Auto,*">
-                <Label
-                    Grid.Row="0"
-                    Padding="5"
-                    FontSize="12"
-                    HorizontalOptions="Center"
-                    Text="Pull to Refresh"
-                    TextColor="DarkBlue" />
                 <ScrollView Grid.Row="1" Padding="5">
                     <CollectionView
                         x:Name="ToDoCollectionView"
@@ -33,18 +26,39 @@
                                 <VerticalStackLayout>
                                     <Border
                                         Margin="5"
-                                        BackgroundColor="Red"
+                                        BackgroundColor="SkyBlue"
                                         StrokeShape="RoundRectangle 15"
                                         StrokeThickness="0">
-                                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="2">
                                             <StackLayout Grid.Column="1">
-                                                <Label FontSize="20" Text="{Binding Title}" />
-                                                <Label FontSize="16" Text="{Binding Description}" />
-                                                <Label FontSize="16" Text="{Binding Created}" />
-                                                <Label FontSize="16" Text="{Binding DueDate}" />
-                                                <Label FontSize="16" Text="{Binding Priority}" />
+                                                <Label
+                                                    FontSize="20"
+                                                    LineBreakMode="WordWrap"
+                                                    Text="{Binding Title}"
+                                                    TextColor="White" />
+                                                <Label
+                                                    FontSize="16"
+                                                    LineBreakMode="WordWrap"
+                                                    Text="{Binding Description}"
+                                                    TextColor="White" />
+                                                <Label
+                                                    FontSize="16"
+                                                    Text="{Binding Priority}"
+                                                    TextColor="White" />
+                                                <StackLayout Orientation="Horizontal">
+                                                    <Label Text="Created: " TextColor="White" />
+                                                    <Label
+                                                        FontSize="16"
+                                                        Text="{Binding Created, StringFormat='{0:d}'}"
+                                                        TextColor="White" />
+                                                    <Label Text="  Due: " TextColor="White" />
+                                                    <Label
+                                                        FontSize="16"
+                                                        Text="{Binding DueDate, StringFormat='{0:d}'}"
+                                                        TextColor="White" />
+                                                </StackLayout>
                                             </StackLayout>
-                                            <StackLayout Grid.Column="2">
+                                            <StackLayout Grid.Column="2" Spacing="5">
                                                 <Button
                                                     BackgroundColor="Red"
                                                     Clicked="Button2_Clicked"
@@ -53,28 +67,22 @@
                                                     HeightRequest="50"
                                                     HorizontalOptions="EndAndExpand"
                                                     Text="Delete"
-                                                    TextColor="DarkBlue"
-                                                    WidthRequest="120" />
+                                                    TextColor="White"
+                                                    WidthRequest="100" />
 
                                                 <Button
-                                                    BackgroundColor="Red"
+                                                    BackgroundColor="Green"
                                                     Clicked="Button1_Clicked"
                                                     Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ToDoViewModel}}, Path=CompleteToDo}"
                                                     CommandParameter="{Binding ToDoId}"
                                                     HeightRequest="50"
                                                     HorizontalOptions="EndAndExpand"
                                                     Text="Complete"
-                                                    TextColor="DarkBlue"
-                                                    WidthRequest="120" />
+                                                    TextColor="White"
+                                                    WidthRequest="100" />
                                             </StackLayout>
                                         </Grid>
-
                                     </Border>
-
-                                    <!--<VerticalStackLayout.GestureRecognizers>
-                                        <TapGestureRecognizer Tapped="OnUpdateTapped" />
-                                    </VerticalStackLayout.GestureRecognizers>-->
-
                                 </VerticalStackLayout>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>

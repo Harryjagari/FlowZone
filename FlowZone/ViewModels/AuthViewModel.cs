@@ -55,7 +55,7 @@ namespace FlowZone.ViewModels
 				if(result.IsSuccess)
 				{
 					_authService.Signin(result.Data);
-					await GoToAsync($"//{nameof(Login)}", animate: true);
+					await GoToAsync(nameof(Login), animate: true);
 
 				}
 				else

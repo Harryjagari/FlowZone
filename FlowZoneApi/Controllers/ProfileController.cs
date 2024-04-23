@@ -48,11 +48,11 @@ namespace FlowZoneApi.Controllers
                 UserId = user.UserId,
                 UserName = user.UserName,
                 Email = user.Email,
+                EarnedPoints = user.EarnedPoints,
                 Address = user.Address,
                 ProfilePictureUrl = GetImagePath(user.ProfilePictureUrl)
             };
 
-            // Create a list and add the profileDto object to it
             var profileDtoList = new List<ProfileDto> { profileDto };
 
             return new ResultWithDataDto<List<ProfileDto>>(true, profileDtoList, null);
@@ -84,13 +84,8 @@ namespace FlowZoneApi.Controllers
 
             var avatar = userAvatar.Avatar;
 
-            // Update the user's profile picture URL with the selected avatar's image path
-            // Assuming the image path is stored in the Avatar entity
             var user = await _context.Users.FindAsync(Guid.Parse(userId));
 
-            // Here, you need to adjust how you store the profile picture URL in your User entity
-            // For example, you might have a ProfilePicturePath property instead of ProfilePictureUrl
-            // Assuming the profile picture URL is stored directly in the User entity
             user.ProfilePictureUrl = avatar.ImagePath;
 
             await _context.SaveChangesAsync();
@@ -109,13 +104,13 @@ namespace FlowZoneApi.Controllers
 
             string imageName = Path.GetFileName(imagePath);
 
-            // Log the extracted imageName
+
             Debug.WriteLine($"Extracted imageName: {imageName}");
 
-            // Construct the URL
+
             string imageUrl = $"{AppConstants.BaseApiUrl}/api/AvatarMobile/image/{imageName}";
 
-            // Log the final imageUrl
+
             Debug.WriteLine($"Final imageUrl: {imageUrl}");
 
             return imageUrl;
@@ -124,18 +119,18 @@ namespace FlowZoneApi.Controllers
         [HttpGet("image/{imageName}")]
         public IActionResult GetImage(string imageName)
         {
-            // Assuming images are stored in the wwwroot/Images directory
+
             var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images", imageName);
 
             if (System.IO.File.Exists(imagePath))
             {
-                // Read the image file and return as a FileResult
+
                 var imageFileStream = System.IO.File.OpenRead(imagePath);
-                return File(imageFileStream, "image/jpeg"); // Adjust content type based on image type
+                return File(imageFileStream, "image/jpeg"); 
             }
             else
             {
-                // Return a placeholder image or an error response
+
                 return NotFound();
             }
         }

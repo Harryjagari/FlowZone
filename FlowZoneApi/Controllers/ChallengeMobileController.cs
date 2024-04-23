@@ -17,7 +17,6 @@ namespace FlowZoneApi.Controllers
             _context = context;
         }
 
-        // GET: api/Challenge
         [HttpGet]
         public async Task<ResultWithDataDto<List<ChallengeDto>>> GetAllChallenges()
         {

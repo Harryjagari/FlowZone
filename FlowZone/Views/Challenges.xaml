@@ -45,13 +45,17 @@
                                                     FontSize="18"
                                                     Text="{Binding Points, StringFormat='{0:c}'}"
                                                     TextColor="Red" />
-                                                <Label FontSize="16" Text="{Binding StartDate}" />
-                                                <Label FontSize="16" Text="{Binding EndDate}" />
+                                                <StackLayout Orientation="Horizontal">
+                                                    <Label Text="Start: " TextColor="White" />
+                                                    <Label FontSize="16" Text="{Binding StartDate, StringFormat='{0:d}'}" />
+                                                    <Label Text="End: " TextColor="White" />
+                                                    <Label FontSize="16" Text="{Binding EndDate, StringFormat='{0:d}'}" />
+                                                </StackLayout>
                                             </VerticalStackLayout>
 
                                             <Button
                                                 Grid.Column="2"
-                                                BackgroundColor="DarkBlue"
+                                                BackgroundColor="Green"
                                                 Clicked="Button_Clicked"
                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ChallengeViewModel}}, Path=JoinChallenges}"
                                                 CommandParameter="{Binding ChallengeId}"

@@ -12,7 +12,6 @@
             <h1 style="color: blue;">Challenges</h1>
         </div>
         <div class="col-6 text-end">
-            <!-- Button trigger modal -->
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#challengeModal">
                 Add
             </button>
@@ -57,29 +56,28 @@
                         </div>
                         <div class="modal-body">
                             <form id="editChallengeForm-@challenge.ChallengeId" action="@Url.Action("Edit", "Challenge", new { id = challenge.ChallengeId })" method="post">
-                                <!-- Form inputs -->
                                 <div class="form-group">
                                     <label for="EditTitle">Name</label>
-                                    <input type="text" class="form-control" id="EditTitle-@challenge.ChallengeId" name="Title" placeholder="Challenge Name" value="@challenge.Title">
+                                    <input type="text" class="form-control" id="EditTitle-@challenge.ChallengeId" name="Title" placeholder="Challenge Name" value="@challenge.Title" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="EditDescription">Description</label>
-                                    <textarea class="form-control" id="EditDescription-@challenge.ChallengeId" name="Description" placeholder="Challenge Description">@challenge.Description</textarea>
+                                    <textarea class="form-control" id="EditDescription-@challenge.ChallengeId" name="Description" placeholder="Challenge Description" required>@challenge.Description</textarea>
 
                                 </div>
                                 <div class="form-group">
                                     <label for="EditPoints">Points</label>
-                                    <input type="number" class="form-control" id="EditPoints-@challenge.ChallengeId" name="Points" placeholder="Points" value="@challenge.Points">
+                                    <input type="number" class="form-control" id="EditPoints-@challenge.ChallengeId" name="Points" placeholder="Points" value="@challenge.Points" required>
 
                                 </div>
                                 <div class="form-group">
                                     <label for="EditStartDate">Start Date</label>
-                                    <input type="date" class="form-control" id="EditStartDate-@challenge.ChallengeId" name="StartDate" value="@challenge.StartDate?.ToString("yyyy-MM-dd")">
+                                    <input type="date" class="form-control" id="EditStartDate-@challenge.ChallengeId" name="StartDate" value="@challenge.StartDate?.ToString("yyyy-MM-dd")" required>
 
                                 </div>
                                 <div class="form-group">
                                     <label for="EditEndDate">End Date</label>
-                                    <input type="date" class="form-control" id="EditEndDate-@challenge.ChallengeId" name="EndDate" value="@challenge.EndDate?.ToString("yyyy-MM-dd")">
+                                    <input type="date" class="form-control" id="EditEndDate-@challenge.ChallengeId" name="EndDate" value="@challenge.EndDate?.ToString("yyyy-MM-dd")" required>
 
                                 </div>
                                 <div class="modal-footer">
@@ -99,7 +97,6 @@
         <p>No challenges available</p>
     }
 
-    <!-- Modal -->
     <div class="modal fade" id="challengeModal" tabindex="-1" role="dialog" aria-labelledby="challengeModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -111,26 +108,25 @@
                 </div>
                 <div class="modal-body">
                     <form id="challengeForm" action="@Url.Action("Create", "Challenge")" method="post">
-                        <!-- Form inputs -->
                         <div class="form-group">
                             <label for="Title">Name</label>
-                            <input type="text" class="form-control" id="Title" name="Title" placeholder="Challenge Name">
+                            <input type="text" class="form-control" id="Title" name="Title" placeholder="Challenge Name" required>
                         </div>
                         <div class="form-group">
                             <label for="Description">Description</label>
-                            <textarea class="form-control" id="Description" name="Description" placeholder="Challenge Description"></textarea>
+                            <textarea class="form-control" id="Description" name="Description" placeholder="Challenge Description" required></textarea>
                         </div>
                         <div class="form-group">
                             <label for="Points">Points</label>
-                            <input type="number" class="form-control" id="Points" name="Points" placeholder="Points">
+                            <input type="number" class="form-control" id="Points" name="Points" placeholder="Points" required>
                         </div>
                         <div class="form-group">
                             <label for="StartDate">Start Date</label>
-                            <input type="date" class="form-control" id="StartDate" name="StartDate">
+                            <input type="date" class="form-control" id="StartDate" name="StartDate" required>
                         </div>
                         <div class="form-group">
                             <label for="EndDate">End Date</label>
-                            <input type="date" class="form-control" id="EndDate" name="EndDate">
+                            <input type="date" class="form-control" id="EndDate" name="EndDate" required>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

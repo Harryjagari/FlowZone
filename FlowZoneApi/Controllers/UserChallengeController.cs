@@ -20,7 +20,6 @@ namespace FlowZoneApi.Controllers
             _context = context;
         }
 
-        //// POST: api/UserChallenge/JoinChallenge
         [HttpPost("JoinChallenge/{ChallengeId}")]
         public async Task<ResultWithDataDto<string>> JoinChallenge(Guid ChallengeId)
         {
@@ -48,7 +47,6 @@ namespace FlowZoneApi.Controllers
             return new ResultWithDataDto<string>(true, "User joined the challenge successfully", null);
         }
 
-        // PUT: api/UserChallenge/CompleteChallenge/5
         [HttpPut("CompleteChallenge/{userChallengeId}")]
         public async Task<ResultWithDataDto<string>> CompleteChallenge(Guid userChallengeId)
         {
@@ -71,16 +69,15 @@ namespace FlowZoneApi.Controllers
                 return new ResultWithDataDto<string>(false, null, "Challenge is already completed.");
             }
 
-            // Update the challenge as completed
             userChallenge.CompletionStatus = true;
             _context.UserChallenges.Update(userChallenge);
 
-            // Add points to user account
+
             var challenge = await _context.Challenges.FindAsync(userChallenge.ChallengeId);
             var user = await _context.Users.FindAsync(userChallenge.UserId);
             if (challenge != null && user != null)
             {
-                user.EarnedPoints += challenge.Points; // Assuming challenge has a 'Points' property
+                user.EarnedPoints += challenge.Points; 
                 _context.Users.Update(user);
             }
 
@@ -89,7 +86,7 @@ namespace FlowZoneApi.Controllers
             return new ResultWithDataDto<string>(true, "Challenge completed successfully", null);
         }
 
-        //// GET: api/UserChallenge/GetUncompletedChallenges
+
         [HttpGet("GetUncompletedChallenges")]
         public async Task<ResultWithDataDto<List<UserChallengeDto>>> GetUncompletedChallenges()
         {

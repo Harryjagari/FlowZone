@@ -7,11 +7,15 @@ namespace FlowZone.Views
     {
         private readonly ToDoViewModel _toDoViewModel;
 
+
+
         public ToDo(ToDoViewModel toDoViewModel)
         {
             InitializeComponent();
             _toDoViewModel = toDoViewModel;
+
             BindingContext = _toDoViewModel;
+
         }
 
 
@@ -19,6 +23,7 @@ namespace FlowZone.Views
         {
             base.OnAppearing();
             await _toDoViewModel.InitializeAsync();
+
         }
 
     }

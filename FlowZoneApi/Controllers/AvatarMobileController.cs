@@ -27,10 +27,9 @@ namespace FlowZoneApi.Controllers
                 AvatarId = a.AvatarId,
                 avatarName = a.Name,
                 avatarPrice = a.Price,
-                ImagePath = GetImagePath(a.ImagePath) // Retrieve image path
+                ImagePath = GetImagePath(a.ImagePath) 
             }).ToListAsync();
 
-            // Create a successful result
             var result = ResultWithDataDto<List<AvatarDto>>.Success(avatars);
 
             return result;
@@ -47,46 +46,29 @@ namespace FlowZoneApi.Controllers
 
             string imageName = Path.GetFileName(imagePath);
 
-            // Log the extracted imageName
             Debug.WriteLine($"Extracted imageName: {imageName}");
 
-            // Construct the URL
             string imageUrl = $"{AppConstants.BaseApiUrl}/api/AvatarMobile/image/{imageName}";
 
-            // Log the final imageUrl
             Debug.WriteLine($"Final imageUrl: {imageUrl}");
 
             return imageUrl;
         }
 
 
-        //private static string GetImagePath(string imagePath)
-        //{
-        //    if (string.IsNullOrEmpty(imagePath))
-        //    {
-        //        return null;
-        //    }
-
-        //    // Extract the file name from the full file path
-        //    string imageName = Path.GetFileName(imagePath);
-        //    return $"{AppConstants.BaseApiUrl}/api/AvatarMobile/image/{imageName}";
-        //}
-
         [HttpGet("image/{imageName}")]
         public IActionResult GetImage(string imageName)
         {
-            // Assuming images are stored in the wwwroot/Images directory
             var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images", imageName);
 
             if (System.IO.File.Exists(imagePath))
             {
-                // Read the image file and return as a FileResult
+
                 var imageFileStream = System.IO.File.OpenRead(imagePath);
-                return File(imageFileStream, "image/jpeg"); // Adjust content type based on image type
+                return File(imageFileStream, "image/jpeg"); 
             }
             else
             {
-                // Return a placeholder image or an error response
                 return NotFound();
             }
         }
@@ -94,7 +76,7 @@ namespace FlowZoneApi.Controllers
         //[HttpGet("image/{imageName}")]
         //public IActionResult GetImage(string imageName)
         //{
-        //    // Assuming images are stored in the wwwroot/Images directory
+        //   
         //    var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images", imageName);
 
         //    if (System.IO.File.Exists(imagePath))
@@ -107,7 +89,7 @@ namespace FlowZoneApi.Controllers
         //    }
         //    else
         //    {
-        //        // Return a placeholder image or an error response
+        //       
         //        return NotFound();
         //    }
         //}

@@ -7,11 +7,14 @@ public partial class Home : ContentPage
 {
 	private readonly HomeViewModel _homeViewModel;
 
-    public Home(HomeViewModel homeViewModel)
+    private readonly ToDoViewModel _toDoViewModel;
+
+    public Home(HomeViewModel homeViewModel, ToDoViewModel toDoViewModel)
 	{
 		InitializeComponent();
-		_homeViewModel = homeViewModel;
-		BindingContext = _homeViewModel;
+		_homeViewModel = homeViewModel;       
+        BindingContext = _homeViewModel;
+        _toDoViewModel = toDoViewModel;
     }
 
 	protected override async void OnAppearing()
@@ -24,10 +27,7 @@ public partial class Home : ContentPage
     {
         if (sender is Button button && button.BindingContext is ToDoDto toDoDto)
         {
-            if (BindingContext is ToDoViewModel viewModel)
-            {
-                await viewModel.CompleteToDoAsync(toDoDto.ToDoId);
-            }
+            await _toDoViewModel.CompleteToDoAsync(toDoDto.ToDoId);
         }
     }
 
@@ -35,10 +35,7 @@ public partial class Home : ContentPage
     {
         if (sender is Button button && button.BindingContext is ToDoDto toDoDto)
         {
-            if (BindingContext is ToDoViewModel viewModel)
-            {
-                await viewModel.DeleteToDoAsync(toDoDto.ToDoId);
-            }
+            await _toDoViewModel.DeleteToDoAsync(toDoDto.ToDoId);
         }
     }
 
@@ -47,26 +44,22 @@ public partial class Home : ContentPage
         await Shell.Current.GoToAsync(nameof(Profile));
     }
 
-    //private async void OnUpdateTapped(object sender, ItemTappedEventArgs e)
-    //{
-    //    var ToDo = (ToDoDto)e.Item;
-    //    await Navigation.PushModalAsync(new UpdateToDo(ToDo)
-    //}
-
     private async void OnToDoSelected(object sender, SelectionChangedEventArgs e)
     {
         if (e.CurrentSelection != null && e.CurrentSelection.Count > 0)
         {
-            // Get the selected ToDo item
             var selectedToDoItem = (ToDoDto)e.CurrentSelection.FirstOrDefault();
 
-            // Navigate to the UpdateToDo page and pass the selected ToDoDto item
-            await Navigation.PushAsync(new UpdateToDo(selectedToDoItem));
+            _homeViewModel.SelectedToDoItem = selectedToDoItem;
 
-            // Clear the selection to prevent multiple taps triggering this event
+            var updateToDoPage = new UpdateToDo(_toDoViewModel, selectedToDoItem);
+            await Navigation.PushAsync(updateToDoPage);
+
             ((CollectionView)sender).SelectedItem = null;
         }
     }
+
+
 
 
 

@@ -3,6 +3,7 @@
     x:Class="FlowZone.Views.ToDo"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:System="clr-namespace:System;assembly=mscorlib"
     xmlns:dtos="clr-namespace:FlowZone.shared.Dtos;assembly=FlowZone.shared"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:vm="clr-namespace:FlowZone.ViewModels"
@@ -52,7 +53,8 @@
                 BackgroundColor="White"
                 Date="{Binding DueDate}"
                 FontSize="16"
-                HorizontalOptions="Fill" />
+                HorizontalOptions="Fill"
+                MinimumDate="{Binding Mode=OneWay, Source={x:Static System:DateTime.Today}}" />
 
             <!--  Priority Picker  -->
             <Label

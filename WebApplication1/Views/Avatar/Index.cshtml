@@ -8,7 +8,6 @@
             <h1 style="color: blue;">Avatars</h1>
         </div>
         <div class="col-6 text-end">
-            <!-- Button trigger modal -->
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#avatarModal">
                 Add
             </button>
@@ -37,7 +36,6 @@
                 </div>
             </div>
         </div>
-        <!-- Update modal for this avatar -->
         <div class="modal fade" id="avatarUpdateModal-@avatar.AvatarId" tabindex="-1" role="dialog" aria-labelledby="avatarUpdateModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -48,15 +46,14 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <!-- Update form -->
                         <form id="avatarUpdateForm-@avatar.AvatarId" action="@Url.Action("Update", "Avatar", new { id = avatar.AvatarId })" method="post" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label for="avatarName">Name</label>
-                                <input type="text" class="form-control input-width" id="avatarName-@avatar.AvatarId" name="avatarName" placeholder="Avatar Name" value="@avatar.avatarName">
+                                    <input type="text" class="form-control input-width" id="avatarName-@avatar.AvatarId" name="avatarName" placeholder="Avatar Name" value="@avatar.avatarName" required>
                             </div>
                             <div class="form-group">
                                 <label for="avatarPrice">Price</label>
-                                <input type="number" class="form-control input-width" id="avatarPrice-@avatar.AvatarId" name="avatarPrice" placeholder="Avatar Price" value="@avatar.avatarPrice">
+                                    <input type="number" class="form-control input-width" id="avatarPrice-@avatar.AvatarId" name="avatarPrice" placeholder="Avatar Price" value="@avatar.avatarPrice" required>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -71,7 +68,6 @@
     }
     </div>
 
-    <!-- Modal -->
     <div class="modal fade" id="avatarModal" tabindex="-1" role="dialog" aria-labelledby="avatarModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -84,14 +80,13 @@
                 <div class="modal-body">
                     <form id="avatarForm" action="@Url.Action("Create", "Avatar")" method="post" enctype="multipart/form-data">
 
-                        <!-- Form inputs -->
                         <div class="form-group">
                             <label for="avatarName">Name</label>
-                            <input type="text" class="form-control input-width" id="avatarName" name="avatarName" placeholder="Avatar Name">
+                            <input type="text" class="form-control input-width" id="avatarName" name="avatarName" placeholder="Avatar Name" required> 
                         </div>
                         <div class="form-group">
                             <label for="avatarPrice">Price</label>
-                            <input type="number" class="form-control input-width" id="avatarPrice" name="avatarPrice" placeholder="Avatar Price">
+                            <input type="number" class="form-control input-width" id="avatarPrice" name="avatarPrice" placeholder="Avatar Price" required>
                         </div>
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" id="avatarImage" name="avatarImage">
@@ -113,8 +108,8 @@
 <script>
     $(document).ready(function () {
         $('#avatarImage').change(function () {
-            var fileName = $(this).val().split('\\').pop(); // Extract filename
-            $('#avatarImageLabel').text(fileName); // Set the label text to the filename
+            var fileName = $(this).val().split('\\').pop(); 
+            $('#avatarImageLabel').text(fileName); 
         });
     });
 </script>

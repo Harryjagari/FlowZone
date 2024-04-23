@@ -9,8 +9,8 @@ namespace FlowZone.shared.Dtos
 {
     public class AvatarRequestDto
     {
-        public string avatarName { get; set; } // Adjusted property name to match form input name
-        public int avatarPrice { get; set; } // Adjusted property name to match form input name
+        public string avatarName { get; set; } 
+        public int avatarPrice { get; set; } 
         public IFormFile avatarImage { get; set; }
     }
 }

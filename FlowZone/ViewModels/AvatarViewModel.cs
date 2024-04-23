@@ -71,17 +71,23 @@ namespace FlowZone.ViewModels
         {
             if (!_authService.IsLoggedIn)
             {
-                await ShowAlertAsync("Not lOgged In");
+                await ShowAlertAsync("Not logged in");
+                return;
             }
+
+            // Show confirmation dialog
+            bool purchaseConfirmed = await Shell.Current.DisplayAlert("Confirmation", "Are you sure you want to purchase this avatar?", "Yes", "No");
+
+            if (!purchaseConfirmed)
+                return;
+
             IsBusy = true;
             try
             {
                 var AvatarPurchaseResponse = await _avatarApi.PurchaseAvatar(AvatarId);
                 if (AvatarPurchaseResponse.IsSuccess)
                 {
-                    // Optionally, you can reload avatars or perform any other action after a successful purchase
-                    await ShowAlertAsync("Successfully purchased avatar. ");
-
+                    await ShowAlertAsync("Successfully purchased avatar.");
                 }
                 else
                 {
@@ -97,6 +103,7 @@ namespace FlowZone.ViewModels
                 IsBusy = false;
             }
         }
+
 
     }
 }

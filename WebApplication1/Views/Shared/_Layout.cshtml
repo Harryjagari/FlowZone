@@ -8,13 +8,11 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/Styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/WebApplication1.styles.css" asp-append-version="true" />
-    <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Boxicons CSS -->
     <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet" />
 
-    <!-- Custom CSS -->
+
     <style>
         /* Fixed sidebar */
         .l-navbar {
@@ -22,27 +20,28 @@
             top: 0;
             bottom: 0;
             left: 0;
-            width: 200px; /* Adjust the width as needed */
-            padding-top: 70px; /* Adjust the top padding to match the header height */
-            background-color: blue; /* Sidebar background color */
-            border-right: 1px solid #87CEFA; /* Sidebar border */
-            overflow-y: auto; /* Enable scrolling if content exceeds sidebar height */
+            width: 200px; 
+            padding-top: 70px; 
+            background-color: blue;
+            border-right: 1px solid #87CEFA; 
+            overflow-y: auto; 
         }
 
-        /* Adjust main content area */
         .main-content {
-            margin-left: 200px; /* Adjust margin to match the sidebar width */
+            margin-left: 200px; 
             padding: 15px;
-            padding-top:70px;/* Add padding to avoid content touching the sidebar */
+            padding-top:70px;
         }
     </style>
 </head>
 <body>
     <header class="header" id="header" style="background-color: white;">
         <div class="header_toggle"><i class='bx bx-menu' id="header-toggle"></i></div>
+        <div class="logout-btn">
+            <a href="/Account/Logout" class="btn btn-danger">Logout</a>
+        </div>
     </header>
 
-    <!-- Fixed Sidebar -->
     <div class="l-navbar" id="nav-bar">
         <nav class="nav">
             <div>
@@ -55,7 +54,7 @@
             </div>
         </nav>
     </div>
-    <!-- Main Content -->
+
     <div class="main-content">
         @RenderBody()
     </div>
@@ -67,7 +66,6 @@
     <!-- Custom Script -->
     <script>
         $(document).ready(function () {
-            // Function to toggle the sidebar
             const toggleSidebar = () => {
                 $('#nav-bar').toggleClass('show');
                 $('#header-toggle').toggleClass('bx-x');
@@ -75,35 +73,29 @@
                 $('#header').toggleClass('body-pd');
             };
 
-            // Check if the sidebar state is stored in session storage
             const sidebarState = sessionStorage.getItem('sidebarState');
             if (sidebarState === 'open') {
                 toggleSidebar(); 
             }
 
-            // Toggle sidebar when clicking the header toggle
             $('#header-toggle').click(function () {
                 toggleSidebar();
 
-                // Store the state of the sidebar in session storage
                 const sidebarState = $('#nav-bar').hasClass('show') ? 'open' : 'closed';
                 sessionStorage.setItem('sidebarState', sidebarState);
             });
 
-            // Click event handler for navigation links
             $('.nav_link').click(function () {
-                // Add active class only if it's not already added
                 if (!$(this).hasClass('active')) {
                     $('.nav_link').removeClass('active');
                     $(this).addClass('active');
                 }
             });
 
-            // Click event handler for logo link
             $('.nav_logo').click(function (e) {
-                // Check if the sidebar is active
+
                 if ($('#nav-bar').hasClass('show')) {
-                    e.preventDefault(); // Prevent the default link behavior
+                    e.preventDefault(); 
                 }
             });
         });

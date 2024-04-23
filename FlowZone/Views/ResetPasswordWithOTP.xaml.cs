@@ -7,10 +7,6 @@ public partial class ResetPasswordWithOTP : Popup
 {
     private readonly UserViewModel _userViewModel;
 
-    public ResetPasswordWithOTP()
-    {
-        InitializeComponent();
-    }
     public ResetPasswordWithOTP(UserViewModel userViewModel)
     {
         InitializeComponent();
@@ -24,6 +20,20 @@ public partial class ResetPasswordWithOTP : Popup
 
     private async void OnResetClicked(object sender, EventArgs e)
     {
-
+        if (BindingContext is UserViewModel viewModel)
+        {
+            try
+            {
+                await viewModel.ResetPasswordWithOtpAsync();
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
+            }
+        }
+        else
+        {
+            await Shell.Current.DisplayAlert("Error", "Binding Context", "OK");
+        }
     }
 }

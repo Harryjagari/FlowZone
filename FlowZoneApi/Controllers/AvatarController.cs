@@ -26,7 +26,7 @@ namespace FlowZoneApi.Controllers
                 AvatarId = a.AvatarId,
                 avatarName = a.Name,
                 avatarPrice = a.Price,
-                ImagePath = GetImagePath(a.ImagePath) // Retrieve image path
+                ImagePath = GetImagePath(a.ImagePath) 
             }).ToListAsync();
 
             return Ok(avatars);
@@ -39,7 +39,6 @@ namespace FlowZoneApi.Controllers
                 return null;
             }
 
-            // Extract the file name from the full file path
             string imageName = Path.GetFileName(imagePath);
             return $"{imageName}";
         }
@@ -47,18 +46,15 @@ namespace FlowZoneApi.Controllers
         [HttpGet("image/{imageName}")]
         public IActionResult GetImage(string imageName)
         {
-            // Assuming images are stored in the wwwroot/Images directory
             var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images", imageName);
 
             if (System.IO.File.Exists(imagePath))
             {
-                // Read the image file and return as a FileResult
                 var imageFileStream = System.IO.File.OpenRead(imagePath);
-                return File(imageFileStream, "image/jpeg"); // Adjust content type based on image type
+                return File(imageFileStream, "image/jpeg");
             }
             else
             {
-                // Return a placeholder image or an error response
                 return NotFound();
             }
         }
@@ -69,9 +65,8 @@ namespace FlowZoneApi.Controllers
             if (model == null || model.avatarImage == null)
                 return BadRequest("Invalid form data");
 
-            // Save the file to a root folder
             string uploadDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images");
-            Directory.CreateDirectory(uploadDir); // Create directory if it doesn't exist
+            Directory.CreateDirectory(uploadDir);
             string uniqueFileName = Guid.NewGuid().ToString() + "_" + model.avatarImage.FileName;
             string filePath = Path.Combine(uploadDir, uniqueFileName);
 
@@ -80,7 +75,6 @@ namespace FlowZoneApi.Controllers
                 await model.avatarImage.CopyToAsync(stream);
             }
 
-            // Store the file path in the database
             var Avatar = new Avatar
             {
                 Name = model.avatarName,
@@ -104,7 +98,6 @@ namespace FlowZoneApi.Controllers
                 return NotFound();
             }
 
-            // Update other properties
             avatar.Name = avatarUpdateRequestDto.avatarName;
             avatar.Price = avatarUpdateRequestDto.avatarPrice;
 
@@ -140,7 +133,6 @@ namespace FlowZoneApi.Controllers
                 return NotFound();
             }
 
-            // Delete associated image file
             DeleteFile(avatar.ImagePath);
 
             _context.Avatars.Remove(avatar);

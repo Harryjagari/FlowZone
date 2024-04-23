@@ -10,9 +10,9 @@
     NavigationPage.HasNavigationBar="True">
 
 
-    <ContentPage.BindingContext>
+    <!--<ContentPage.BindingContext>
         <vm:ToDoViewModel />
-    </ContentPage.BindingContext>
+    </ContentPage.BindingContext>-->
 
 
     <RefreshView RefreshColor="DarkBlue">

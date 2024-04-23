@@ -20,7 +20,7 @@ public partial class GetStarted : ContentPage
 			await Shell.Current.GoToAsync($"//{nameof(Home)}");
 		}
 	}
-	// Event handler for the skip button click event
+
 	private async void OnSkipClicked(object sender, EventArgs e)
 	{
 		await Shell.Current.GoToAsync(nameof(Login));

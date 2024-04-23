@@ -18,9 +18,12 @@ namespace FlowZone
 			[
 				typeof(Login),
 				typeof(Register),
+                typeof(Home),
                 typeof(ToDo),
-				typeof(Pomodoro),
+				typeof(Avatars),
+                typeof(Pomodoro),
 				typeof(MyChallenges),
+				typeof(Profile),	
 				typeof(Challenges),
 				typeof (UpdateToDo),
 				typeof(ResetPassword),

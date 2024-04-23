@@ -34,8 +34,8 @@ namespace FlowZone.ViewModels
         private ToDoDto _selectedToDoItem;
         public ToDoDto SelectedToDoItem
         {
-            get { return _selectedToDoItem; }
-            set { SetProperty(ref _selectedToDoItem, value); }
+            get => _selectedToDoItem;
+            set => SetProperty(ref _selectedToDoItem, value);
         }
 
         [ObservableProperty]
@@ -49,8 +49,11 @@ namespace FlowZone.ViewModels
             if (_isInitialized)
                 return;
             _isInitialized = true;
+            IsRefreshing = true;
+
             await LoadProfile(true);
             await LoadToDos(true);
+
         }
 
         private async Task LoadProfile(bool initialLoad)

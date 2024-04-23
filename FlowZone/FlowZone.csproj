@@ -42,12 +42,14 @@
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
-		<MauiImage Update="Resources\Images\default_profile_image.jpg">
+		<MauiImage Update="Resources\Images\check.png">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</MauiImage>
-		<MauiImage Update="Resources\Images\dotnet_bot.png" Resize="True" BaseSize="300,185" />
 		<MauiImage Update="Resources\Images\resource.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</MauiImage>
+		<MauiImage Update="Resources\Images\trash.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</MauiImage>
 
 		<!-- Custom Fonts -->
@@ -70,10 +72,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Remove="Resources\Images\default_profile_image.jpg" />
+		<None Remove="Resources\Images\check.png" />
 		<None Remove="Resources\Images\get_started.svg" />
 		<None Remove="Resources\Images\logo.png" />
 		<None Remove="Resources\Images\resource.png" />
+		<None Remove="Resources\Images\trash.png" />
 		<None Remove="Resources\Splash\Splash1.svg" />
 	</ItemGroup>
 
@@ -113,9 +116,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<MauiXaml Update="Views\Analytics.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
 		<MauiXaml Update="Views\Avatars.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
@@ -136,9 +136,6 @@
 		</MauiXaml>
 		<MauiXaml Update="Views\MyChallenges.xaml">
 		  <Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\Notification.xaml">
-			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Views\Pomodoro.xaml">
 			<Generator>MSBuild:Compile</Generator>

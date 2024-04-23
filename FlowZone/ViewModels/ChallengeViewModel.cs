@@ -85,7 +85,6 @@ namespace FlowZone.ViewModels
                 var JoinChallengeResponse = await _challengeApi.JoinChallenges(ChallengeId);
                 if (JoinChallengeResponse.IsSuccess)
                 {
-                    // Optionally, you can reload avatars or perform any other action after a successful purchase
                     await ShowAlertAsync("Successfully joined challenge. ");
 
                 }

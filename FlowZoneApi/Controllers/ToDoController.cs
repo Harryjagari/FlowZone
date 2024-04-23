@@ -14,13 +14,12 @@ namespace FlowZoneApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize] // Require authentication for all actions in this controller
+    [Authorize] 
     public class ToDoController(DataContext context) : ControllerBase
     {
         private readonly DataContext _context = context;
 
-        // GET: api/ToDo
-        // GET: api/ToDo
+
         [HttpGet]
         public async Task<ResultWithDataDto<List<ToDoDto>>> GetAllToDoItems()
         {
@@ -30,10 +29,10 @@ namespace FlowZoneApi.Controllers
             var toDoItems = await _context.ToDos
                 .Where(t => t.UserId.ToString() == userId && !t.IsComplete && t.DueDate > currentDate)
                 .Select(t => new ToDoDto(
-                    t.ToDoId, // ToDoId
+                    t.ToDoId, 
                     t.Title,
                     t.Description,
-                    t.CreatedAt, // Assuming CreatedAt is the creation date of ToDo
+                    t.CreatedAt,
                     t.DueDate,
                     t.Priority
                 ))
@@ -69,7 +68,6 @@ namespace FlowZoneApi.Controllers
 
 
 
-        // GET: api/ToDo/1
         [HttpGet("{id}")]
         [Authorize]
         public async Task<ResultWithDataDto<ToDoDto>> GetToDoItem(Guid id)
@@ -94,7 +92,7 @@ namespace FlowZoneApi.Controllers
         }
 
 
-        // POST: api/ToDo
+
         [HttpPost]
         public async Task<ResultWithDataDto<ToDoDto>> CreateToDoItem(CreateToDoDto toDoDto)
         {
@@ -103,7 +101,6 @@ namespace FlowZoneApi.Controllers
 
             if (user == null)
             {
-                // Handle the scenario where the user is not found
                 return ResultWithDataDto<ToDoDto>.Failure("User not found");
             }
 
@@ -115,16 +112,16 @@ namespace FlowZoneApi.Controllers
                 CreatedAt = DateTime.Now,
                 DueDate = toDoDto.DueDate,
                 Priority = toDoDto.Priority,
-                IsComplete = false, // Defaulting to false as the todo is just created
-                UserId = user.UserId // Set the UserId for the ToDo item
+                IsComplete = false, 
+                UserId = user.UserId 
             };
 
-            // Add the ToDo item to the context
+
             _context.ToDos.Add(toDoItem);
 
             await _context.SaveChangesAsync();
 
-            // Return the created ToDo item
+
             var createdToDoDto = new ToDoDto(
                 toDoItem.ToDoId,
                 toDoItem.Title,
@@ -139,10 +136,9 @@ namespace FlowZoneApi.Controllers
 
 
 
-        // PUT: api/ToDo/1
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<ResultDto> UpdateToDoItem(Guid id, CreateToDoDto toDoDto)
+        public async Task<ResultDto> UpdateToDoItem(Guid id,CreateToDoDto toDoDto)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var existingItem = await _context.ToDos.FirstOrDefaultAsync(t => t.ToDoId == id);
@@ -161,7 +157,6 @@ namespace FlowZoneApi.Controllers
             return ResultDto.Success();
         }
 
-        // DELETE: api/ToDo/1
         [HttpDelete("{id}")]
         [Authorize]
         public async Task<ResultDto> DeleteToDoItem(Guid id)
@@ -204,7 +199,7 @@ namespace FlowZoneApi.Controllers
                 return new ResultWithDataDto<string>(false, null, "ToDo is already completed.");
             }
 
-            // Update the challenge as completed
+
             userToDo.IsComplete = true;
             _context.ToDos.Update(userToDo);
 

@@ -34,9 +34,9 @@ namespace FlowZoneApi.Services
             }
             catch (SmtpException ex)
             {
-                // Log the exception instead of writing to console
+
                 Console.WriteLine($"Failed to send email: {ex.StatusCode} - {ex.Message}");
-                throw; // Rethrow the exception for the caller to handle
+                throw; 
             }
         }
 

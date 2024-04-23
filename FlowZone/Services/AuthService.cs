@@ -30,22 +30,6 @@ namespace FlowZone.Services
             (User, Token) = dto;
 		}
 
-		//public void Initialize()
-		//{
-		//	if (Preferences.Default.ContainsKey(AuthKey))
-		//	{
-		//		var serialized = Preferences.Default.Get<string?>(AuthKey, null);
-		//		if (string.IsNullOrWhiteSpace(serialized))
-		//		{
-		//			Preferences.Default.Remove(AuthKey);
-		//		}
-		//		else
-		//		{
-		//			(User,Token) = JsonSerializer.Deserialize<AuthResponseDto>(serialized)!;
-  //                  _commonService.SetToken(user?.Token);
-  //              }
-		//	}
-		//}
 
         public void Initialize()
         {

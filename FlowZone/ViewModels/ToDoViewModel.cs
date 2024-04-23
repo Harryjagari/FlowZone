@@ -1,9 +1,11 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FlowZone.Services;
 using FlowZone.shared.Dtos;
 using FlowZone.Views;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FlowZone.ViewModels
 {
@@ -12,15 +14,11 @@ namespace FlowZone.ViewModels
         private readonly IToDosApi _toDosApi;
         private readonly AuthService _authService;
 
-        public ToDoViewModel()
-        {
-            // Parameterless constructor
-        }
-
         public ToDoViewModel(IToDosApi toDosApi, AuthService authService)
         {
             _toDosApi = toDosApi;
             _authService = authService;
+
         }
 
         [ObservableProperty]
@@ -28,6 +26,8 @@ namespace FlowZone.ViewModels
 
         [ObservableProperty]
         private Guid _toDoId;
+
+        public DateTime MinDate =>DateTime.Now;
 
         [ObservableProperty]
         private bool _isRefreshing;
@@ -47,7 +47,6 @@ namespace FlowZone.ViewModels
             get => _selectedToDoItem;
             set => SetProperty(ref _selectedToDoItem, value);
         }
-
 
 
         [ObservableProperty]
@@ -73,7 +72,6 @@ namespace FlowZone.ViewModels
 
         public bool CanUpdateToDo => CanCreateToDo;
 
-
         public async Task InitializeAsync()
         {
             if (_isInitialized)
@@ -81,10 +79,8 @@ namespace FlowZone.ViewModels
             _isInitialized = true;
             await LoadAllToDos(true);
 
-            // Check if a ToDo item is selected for editing
             if (_selectedToDoItem != null)
             {
-                // Populate the UI with the details of the selected ToDo item
                 Title = _selectedToDoItem.Title;
                 Description = _selectedToDoItem.Description;
                 DueDate = _selectedToDoItem.DueDate;
@@ -92,14 +88,7 @@ namespace FlowZone.ViewModels
             }
         }
 
-        //public async Task InitializeAsync()
-        //{
-        //    if (_isInitialized)
-        //        return;
-        //    _isInitialized = true;
-        //    await LoadAllToDos(true);
 
-        //}
         private async Task LoadAllToDos(bool initialLoad)
         {
             if (initialLoad)
@@ -136,14 +125,25 @@ namespace FlowZone.ViewModels
             IsBusy = true;
             try
             {
+                if (string.IsNullOrWhiteSpace(Title))
+                {
+                    await ShowErrorAlertAsync("Title is required");
+                    return;
+                }
+
+                if (DueDate == default(DateTime))
+                {
+                    await ShowErrorAlertAsync("Due date is required");
+                    return;
+                }
+
                 var CreateToDoDto = new CreateToDoDto(Title, Description, DueDate, Priority);
 
                 var result = await _toDosApi.CreateToDoItem(CreateToDoDto);
 
                 if (result.IsSuccess)
                 {
-                    await GoToAsync($"//{nameof(ToDoView)}", animate: true);
-
+                    await GoToAsync(nameof(ToDoView), animate: true);
                 }
                 else
                 {
@@ -160,30 +160,54 @@ namespace FlowZone.ViewModels
             }
         }
 
+
         [RelayCommand]
         public async Task UpdateToDoItemAsync(Guid ToDoId)
         {
             IsBusy = true;
             try
             {
-                // Ensure a ToDo item is selected for updating
-
-                // Create a new CreateToDoDto object from the properties of the selected ToDo item
-                var updateDto = new CreateToDoDto(Title, Description, DueDate, Priority);
-
-                // Call the API to update the ToDo item
-                var result = await _toDosApi.UpdateToDoItem(ToDoId, updateDto);
-
-                if (result.IsSuccess)
+                if (string.IsNullOrWhiteSpace(Title))
                 {
-                    // Optionally, navigate back to the ToDo page or perform other actions
-                    await GoToAsync($"//{nameof(ToDo)}", animate: true);
+                    await ShowErrorAlertAsync("Title is required");
+                    return;
+                }
+
+                if (DueDate == default(DateTime))
+                {
+                    await ShowErrorAlertAsync("Due date is required");
+                    return;
+                }
+                if (Title != null && Description != null && Priority != null)
+                {
+                    var updateDto = new CreateToDoDto(Title, Description, DueDate, Priority);
+
+                    try
+                    {
+                        var result = await _toDosApi.UpdateToDoItem(ToDoId, updateDto);
+                        if (result.IsSuccess)
+                        {
+                            await ShowAlertAsync("ToDo item successfully updated");
+
+                            await GoToAsync($"//{nameof(Home)}", animate: true);
+                        }
+                        else
+                        {
+                            await ShowErrorAlertAsync(result.ErrorMessage ?? "Unknown Error in Updating");
+                        }
+
+                    }
+                    catch(Exception ex)
+                    {
+                        await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
+                    }
+
+
                 }
                 else
                 {
-                    await ShowErrorAlertAsync(result.ErrorMessage ?? "Unknown Error in Updating");
+                    await ShowAlertAsync("One or more properties is null");
                 }
-
             }
             catch (Exception ex)
             {
@@ -194,6 +218,7 @@ namespace FlowZone.ViewModels
                 IsBusy = false;
             }
         }
+
 
 
 
@@ -210,7 +235,6 @@ namespace FlowZone.ViewModels
                 var CompleteToDoResponse = await _toDosApi.CompleteToDo(ToDoId);
                 if (CompleteToDoResponse.IsSuccess)
                 {
-                    // Optionally, you can reload avatars or perform any other action after a successful purchase
                     await ShowAlertAsync("Successfully completed ToDo. ");
 
                 }
@@ -235,17 +259,22 @@ namespace FlowZone.ViewModels
         {
             if (!_authService.IsLoggedIn)
             {
-                await ShowAlertAsync("Not lOgged In");
+                await ShowAlertAsync("Not logged in");
+                return;
             }
+
+            bool deleteConfirmed = await Shell.Current.DisplayAlert("Confirmation", "Are you sure you want to delete this ToDo?", "Yes", "No");
+
+            if (!deleteConfirmed)
+                return;
+
             IsBusy = true;
             try
             {
                 var DeleteToDoResponse = await _toDosApi.DeleteToDoItem(ToDoId);
                 if (DeleteToDoResponse.IsSuccess)
                 {
-                    // Optionally, you can reload avatars or perform any other action after a successful purchase
-                    await ShowAlertAsync("Successfully deleted ToDo. ");
-
+                    await ShowAlertAsync("Successfully deleted ToDo.");
                 }
                 else
                 {
@@ -261,6 +290,7 @@ namespace FlowZone.ViewModels
                 IsBusy = false;
             }
         }
+
 
     }
 }
